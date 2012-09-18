@@ -23,7 +23,7 @@ sig
     (* Insert a value into the tree, using the given index function *)    
     val insert : 'a tree -> 'a -> 'a indexFn -> unit
 
-    (* Apply the given reduction to the tree *)
+    (* Apply the given reduction to the tree in parallel *)
     val reduce : 'a tree -> 'a reduction -> unit
 
     (* Obtain a read-only tree. *)
