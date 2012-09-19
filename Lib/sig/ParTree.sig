@@ -14,7 +14,7 @@ sig
     (* The type of a user-supplied reduction function that takes a
        current data value and a list of (child) data values, and produces
        a new data value. *)
-    type 'a reduction = 'a * ('a list) -> 'a
+    type 'a reduction = 'a -> 'a list -> 'a
 
     (* Construct a new empty tree with given arity *)
     val empty : int -> 'a indexFn -> 'a tree
