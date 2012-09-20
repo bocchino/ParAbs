@@ -6,10 +6,10 @@ sig
     exception BadArgument
 
     (* A list of disjoint array slices *)
-    type 'a slices
+    (*shared*) type 'a slices
 
     (* A list of lists of disjoint array slices *)
-    type 'a partitions
+    (*shared*) type 'a partitions
 
     (* Create a list of disjoint array slices *)
     val slices : (int * 'a) list -> 'a slices
