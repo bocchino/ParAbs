@@ -1,0 +1,7 @@
+Library
+    structure BarnesHut
+is
+    sml/BarnesHut.sml
+
+    $/basis.cm
+    $/smlnj-lib.cm

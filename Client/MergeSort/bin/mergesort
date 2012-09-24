@@ -1,4 +1,4 @@
-ML_RUN=${PML}/bin/ml-run
-MERGE_SORT=${PML}/Client/MergeSort/MergeSort.x86-darwin
+ML_RUN=${PAR_ABS}/bin/ml-run
+MERGE_SORT=${PAR_ABS}/Client/MergeSort/mergesort.x86-darwin
 
 ${ML_RUN} ${MERGE_SORT} "$@"
