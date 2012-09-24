@@ -1,7 +1,14 @@
 Library
     structure BarnesHut
+    structure Constants
+    structure Point
+    structure Util
 is
+    sig/Point.sig
     sml/BarnesHut.sml
+    sml/Constants.sml
+    sml/Point.sml
+    sml/Util.sml
 
     $/basis.cm
     $/smlnj-lib.cm
