@@ -36,9 +36,9 @@ fun dot (p1:t,p2:t) =
 fun toString (p:t) =
     let 
 	fun toString' [] = ""
-	  | toString' (x :: []) = Real.toString x
+	  | toString' (x :: []) = Util.realToString x
 	  | toString' (x :: tl) =
-	    (Real.toString x) ^ "," ^ (toString' tl)
+	    (Util.realToString x) ^ "," ^ (toString' tl)
     in
 	"<" ^ (toString' p) ^ ">"
     end

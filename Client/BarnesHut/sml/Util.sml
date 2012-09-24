@@ -18,4 +18,22 @@ val logging = ref false
 
 fun log s = print s
 
+fun opt f =
+    fn x => case x of SOME s => SOME (f s)
+		    | NONE => NONE
+
+fun printOpt (SOME s) = print s
+  | printOpt NONE = print "NONE"
+
+fun printRet () = print "\n"
+
+fun realToString r =
+    let
+	fun trans #"~" = "-"
+	  | trans c = Char.toString c
+	val substr = Substring.full (Real.fmt (StringCvt.FIX (SOME 6)) r)
+    in
+	Substring.translate trans substr
+    end
+
 end

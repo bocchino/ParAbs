@@ -1,13 +1,17 @@
 Library
     structure BarnesHut
+    structure Body
     structure Constants
     structure Point
+    structure Tree
     structure Util
 is
     sig/Point.sig
     sml/BarnesHut.sml
+    sml/Body.sml
     sml/Constants.sml
     sml/Point.sml
+    sml/Tree.sml
     sml/Util.sml
 
     $/basis.cm
