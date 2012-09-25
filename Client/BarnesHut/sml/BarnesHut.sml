@@ -140,11 +140,11 @@ fun main (name,args) =
 			    (initSystem ();
 			     OS.Process.success)
 			else
-			    (TextIO.output (TextIO.stdErr,"Number of bodies must be divisible by 32\n");
-			     OS.Process.failure))
+			    Util.err "data size must be divisible by 32")
 	|_ => raise BadOpts)
-    handle BadOpts => (Util.printErr (GetOpt.usageInfo
-					  {header="usage: barnes-hut [opts]",
-					   options=options}); OS.Process.failure)
-	 | e => (Util.printErr "exception occurred"; OS.Process.failure)
+    handle BadOpts => (TextIO.output (TextIO.stdErr,GetOpt.usageInfo
+							{header="usage: barnes-hut [opts]",
+							 options=options}); 
+		       OS.Process.failure)
+	 | e => Util.err "exception occurred"
 end

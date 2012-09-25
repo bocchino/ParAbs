@@ -36,7 +36,8 @@ fun realToString r =
 	Substring.translate trans substr
     end
 
-fun printErr str =
-    TextIO.output (TextIO.stdErr,str)
+fun err str =
+    (TextIO.output (TextIO.stdErr,"barnes-hut: " ^ str ^ "\n");
+     OS.Process.failure)
 
 end
