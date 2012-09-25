@@ -34,7 +34,7 @@ sig
     val getRoot : 'a readOnlyTree -> 'a readOnlyNode option
 
     (* Get the value out of a node *)
-    val getData : 'a readOnlyNode -> 'a option
+    val getData : 'a readOnlyNode option -> 'a option
 
     (* Query whether a node is a leaf *)
     val isLeaf : 'a readOnlyNode -> bool

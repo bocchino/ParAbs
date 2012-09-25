@@ -113,7 +113,7 @@ fun reorderBodies (tree,readOnlyRegionTree) =
 		SOME node =>
 		(case RegionTree.getChildren node of
 		     SOME children => Array.app reorderBodies' children
-		   | NONE => (Array.update (newBodies,!index,RegionTree.getData node);
+		   | NONE => (Array.update (newBodies,!index,RegionTree.getData (SOME node));
 			      index := !index + 1))
 	      | NONE => ()
     in
@@ -126,18 +126,16 @@ fun centerOfMass (bodyOpt:body option) (bodiesOpt:body option list) =
     case bodiesOpt of
 	[] => bodyOpt
       | _  => let
-	    fun processChild NONE = NONE
-	      | processChild (SOME body) =
-		let
-		    val pos = Body.getPos body
-		    val mass = Body.getMass body
-		in
-		    SOME (mass,Point.muls (pos,mass))
-		end
 	    fun combine (SOME body,(mass,pos)) =
-		((Body.getMass body) + mass,
-		 Point.add ((Body.getPos body),pos))
-	      | combine (NONE,(mass,pos)) = (mass,pos)
+		let
+		    val bodyPos = Body.getPos body
+		    val bodyMass = Body.getMass body
+		    val bodyMoment = Point.muls (bodyPos,bodyMass)
+		in
+		    (bodyMass + mass,
+		     Point.add (pos,bodyMoment))
+		end
+	      | combine (NONE,mp) = mp
 	    val (mass,pos) = List.foldl combine (0.0,Point.zero) bodiesOpt 
 	    val normalized = (mass,Point.divs (pos,mass))
 	in
@@ -161,9 +159,14 @@ fun stepSystem (tree,nstep) =
     in
 	(Array.app (Util.optApp (RegionTree.insert regionTree)) bodies;
 	 reorderBodies (tree,readOnlyRegionTree);
-	 printBodies (getBodies tree);
+	 (*printBodies (getBodies tree);*)
 	 (* Fill in center-of-mass coordinates *)
 	 ignore (RegionTree.reduce regionTree centerOfMass);
+	 (* Print out checksum, for now *)
+	 Util.printOpt (Util.opt (Point.toString o Body.getPos) 
+				 (RegionTree.getData 
+				      (RegionTree.getRoot readOnlyRegionTree)));
+	 print "\n";
 	 (* Stop after one time step, for now *)
 	 OS.Process.exit OS.Process.success)
     end	

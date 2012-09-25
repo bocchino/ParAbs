@@ -80,8 +80,9 @@ fun getRoot {arity,root,indexFn} = !root
 
 fun getData node =
     case node of
-	Leaf data => SOME (!data)
-      | Inner {data,children} => !data
+	SOME (Leaf data) => SOME (!data)
+      | SOME (Inner {data,children}) => !data
+      | _ => NONE
 
 fun isLeaf node =
     case node of
