@@ -7,7 +7,8 @@ type body = {mass:real,
 	     acc:Point.t,
 	     phi:real}
 
-fun getPos ({mass,pos,vel,acc,phi}:body) = pos
+fun getMass {mass,pos,vel,acc,phi} = mass
+fun getPos {mass,pos,vel,acc,phi} = pos
 
 fun new {mass:real,
 	 pos:Point.t,
@@ -17,6 +18,11 @@ fun new {mass:real,
      vel=vel,
      acc=Point.zero,
      phi=0.0}
+
+fun updateMassPos (SOME {mass,pos,vel,acc,phi}) (mass',pos') =
+    {mass=mass',pos=pos',vel=vel,acc=acc,phi=phi}
+  | updateMassPos NONE (mass,pos) =
+    new {mass=mass,pos=pos,vel=Point.zero}
 
 fun normalize (cmr,cmv)
 	      {mass,pos,vel,acc,phi} =

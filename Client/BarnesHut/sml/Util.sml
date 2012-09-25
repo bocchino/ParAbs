@@ -50,4 +50,5 @@ fun err str =
 fun >> (i:int,shamt:int) =
     Word32.toInt (Word32.>> (Word32.fromInt i,Word.fromInt shamt))
 
+
 end

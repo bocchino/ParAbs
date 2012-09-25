@@ -17,7 +17,7 @@ sig
        a new data value. *)
     type 'a reduction = 'a option -> 'a option list -> 'a option
 
-    (* Construct a new empty tree with given arity *)
+    (* Construct a new empty tree with given number of dimensions *)
     val empty : int -> 'a indexFn -> 'a tree
 
     (* Insert a value into the tree, using the given index function *)    

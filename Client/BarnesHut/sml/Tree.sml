@@ -121,6 +121,29 @@ fun reorderBodies (tree,readOnlyRegionTree) =
 	 setBodies tree newBodies)
     end
 
+(* Reduction function for center-of-mass computation *)
+fun centerOfMass (bodyOpt:body option) (bodiesOpt:body option list) =
+    case bodiesOpt of
+	[] => bodyOpt
+      | _  => let
+	    fun processChild NONE = NONE
+	      | processChild (SOME body) =
+		let
+		    val pos = Body.getPos body
+		    val mass = Body.getMass body
+		in
+		    SOME (mass,Point.muls (pos,mass))
+		end
+	    fun combine (SOME body,(mass,pos)) =
+		((Body.getMass body) + mass,
+		 Point.add ((Body.getPos body),pos))
+	      | combine (NONE,(mass,pos)) = (mass,pos)
+	    val (mass,pos) = List.foldl combine (0.0,Point.zero) bodiesOpt 
+	    val normalized = (mass,Point.divs (pos,mass))
+	in
+	    SOME (Body.updateMassPos bodyOpt normalized)
+	end
+
 (* Advance n-body system one time step *)
 fun stepSystem (tree,nstep) = 
     let
@@ -139,6 +162,8 @@ fun stepSystem (tree,nstep) =
 	(Array.app (Util.optApp (RegionTree.insert regionTree)) bodies;
 	 reorderBodies (tree,readOnlyRegionTree);
 	 printBodies (getBodies tree);
+	 (* Fill in center-of-mass coordinates *)
+	 ignore (RegionTree.reduce regionTree centerOfMass);
 	 (* Stop after one time step, for now *)
 	 OS.Process.exit OS.Process.success)
     end	
