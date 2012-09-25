@@ -19,7 +19,7 @@ fun setRsize {rmin,rsize,bodies} r = rsize := r
 
 fun getBodies {rmin,rsize,bodies} = !bodies
 
-fun calcBoundingBox ({rmin,rsize,bodies}:t) =
+fun calcBoundingBox {rmin,rsize,bodies} =
     let
 	val max = Point.toArray (Point.const Real.minPos)
 	val min = Point.toArray (Point.const Real.maxFinite)
