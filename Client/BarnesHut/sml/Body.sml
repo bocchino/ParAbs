@@ -29,5 +29,11 @@ fun normalize (cmr,cmv)
 fun toString {mass,pos,vel,acc,phi} =
     "Body: pos=" ^ (Point.toString pos)    
     
+fun printBodies bodies =
+    if (!Util.testMode) then
+	Array.app (Util.optApp (fn x => print ((toString x) ^ "\n"))) bodies
+    else
+	()
+
 
 end

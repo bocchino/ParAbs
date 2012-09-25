@@ -88,9 +88,9 @@ fun isLeaf node =
 	Leaf _ => true
       | _      => false
 
-fun getChild node idx =
+fun getChildren node =
     case node of
 	Leaf _ => NONE
-      | Inner {data,children} => Array.sub (children,idx)
+      | Inner {data,children} => SOME children
 
 end

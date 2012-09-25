@@ -9,6 +9,9 @@ all : ${TARGET}.x86-darwin
 ${TARGET}.x86-darwin : BarnesHut.cm ${SIG} ${SML}
 	ml-build BarnesHut.cm BarnesHut.main ${TARGET}
 
+run : ${TARGET}.x86-darwin
+	bin/barnes-hut --size=${SIZE}
+
 test : ${TARGET}.x86-darwin
 	bin/barnes-hut --size=${SIZE} --test
 

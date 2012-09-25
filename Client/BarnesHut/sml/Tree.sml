@@ -102,6 +102,25 @@ fun intcoord (body:body,rmin:Point.t,rsize:real) =
 	Vector.fromList (ListPair.mapEq oneDim (pos,rmin))
     end
 
+(* Reorder the body array to capture the positioning in the tree *)
+fun reorderBodies (tree,readOnlyRegionTree) =
+    let
+	val bodies = getBodies tree
+	val newBodies = Array.array (Array.length bodies,NONE:body option)
+	val index = ref 0
+	fun reorderBodies' nodeOpt =
+	    case nodeOpt of
+		SOME node =>
+		(case RegionTree.getChildren node of
+		     SOME children => Array.app reorderBodies' children
+		   | NONE => (Array.update (newBodies,!index,RegionTree.getData node);
+			      index := !index + 1))
+	      | NONE => ()
+    in
+	(reorderBodies' (RegionTree.getRoot readOnlyRegionTree);
+	 setBodies tree newBodies)
+    end
+
 (* Advance n-body system one time step *)
 fun stepSystem (tree,nstep) = 
     let
@@ -115,8 +134,13 @@ fun stepSystem (tree,nstep) =
 		subindex (intcoord (data,rmin,rsize),level')
 	    end
 	val regionTree = RegionTree.empty NDIM indexFn
+	val readOnlyRegionTree = RegionTree.readOnly regionTree
     in
-	(Array.app (Util.optApp (RegionTree.insert regionTree)) bodies)
+	(Array.app (Util.optApp (RegionTree.insert regionTree)) bodies;
+	 reorderBodies (tree,readOnlyRegionTree);
+	 printBodies (getBodies tree);
+	 (* Stop after one time step, for now *)
+	 OS.Process.exit OS.Process.success)
     end	
 
 end

@@ -10,7 +10,6 @@ open Constants
 
 val nbody = ref 100000
 val tree = Tree.new
-val testMode = ref false
 
 fun uniformTestData (bodies,segNum,cmr,cmv) =
     let
@@ -148,7 +147,7 @@ val options = [{short="s",
 fun processOpt (SizeOpt str) = (case Int.fromString str of
 				    SOME n => nbody := n
 				  | NONE => raise BadOpts)
-  | processOpt TestOpt = testMode := true
+  | processOpt TestOpt = Util.testMode := true
 
 fun main (name,args) =
     (case GetOpt.getOpt {argOrder=GetOpt.Permute,

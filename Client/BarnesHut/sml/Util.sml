@@ -4,6 +4,9 @@ struct
 val A = 16807.0
 val M = 2147483647.0
 
+(* Are we in testing mode? *)
+val testMode = ref false
+
 fun rand (seed:real) =
     let
 	val t = A * seed + 1.0

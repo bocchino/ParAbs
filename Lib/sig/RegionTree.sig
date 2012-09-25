@@ -39,7 +39,7 @@ sig
     (* Query whether a node is a leaf *)
     val isLeaf : 'a readOnlyNode -> bool
 
-    (* Get the nth child of the root of a tree *)
-    val getChild : 'a readOnlyNode -> int -> 'a readOnlyNode option
+    (* Get the children of a node *)
+    val getChildren : 'a readOnlyNode -> 'a readOnlyNode option array option
 
 end
