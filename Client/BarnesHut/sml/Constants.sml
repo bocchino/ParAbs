@@ -6,6 +6,7 @@ val IMAX_SHIFT = 8 * 4 - 2
 
 (* Highest bit of int coord *)
 val IMAX = Word32.<< (Word32.fromInt 1,Word.fromInt (8 * 4 - 2))
+val IMAX_REAL = Real.fromLargeInt (Word32.toLargeInt IMAX)
 
 val PI = 3.14159265358979323846
 val TWO_PI = 6.28318530717958647693

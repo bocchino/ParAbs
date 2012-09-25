@@ -131,7 +131,7 @@ fun doSimulation () =
     in
 	while (!tnow < Constants.tstop + 0.1 * Constants.dtime)
 	      andalso (!i < NSTEPS) do
-	    (Tree.stepSystem tree (!i);
+	    (Tree.stepSystem (tree,!i);
 	     tnow := !tnow + Constants.dtime;
 	     i := !i + 1)
     end
@@ -167,5 +167,5 @@ fun main (name,args) =
 							{header="usage: barnes-hut [opts]",
 							 options=options}); 
 		       OS.Process.failure)
-	 | e => Util.err "exception occurred"
+(*	 | e => Util.err "exception occurred" *)
 end

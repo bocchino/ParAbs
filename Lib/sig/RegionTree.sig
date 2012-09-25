@@ -1,10 +1,10 @@
-signature PAR_TREE =
+signature REGION_TREE =
 sig
 
-    (* The type of a parallel tree with read/write privileges *)
+    (* The type of a region tree with read/write privileges *)
     (*shared*) type 'a tree
 
-    (* Type of a parallel tree with read-only privileges *)
+    (* Type of a region tree with read-only privileges *)
     (*readonly*) type 'a readOnlyTree
     (*readonly*) type 'a readOnlyNode
 

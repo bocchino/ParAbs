@@ -22,6 +22,10 @@ fun opt f =
     fn x => case x of SOME s => SOME (f s)
 		    | NONE => NONE
 
+fun optApp f =
+    fn x => case x of SOME s => f s
+		    | NONE => ()
+
 fun printOpt (SOME s) = print s
   | printOpt NONE = print "NONE"
 
@@ -39,5 +43,8 @@ fun realToString r =
 fun err str =
     (TextIO.output (TextIO.stdErr,"barnes-hut: " ^ str ^ "\n");
      OS.Process.failure)
+
+fun >> (i:int,shamt:int) =
+    Word32.toInt (Word32.>> (Word32.fromInt i,Word.fromInt shamt))
 
 end

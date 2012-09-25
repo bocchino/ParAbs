@@ -2,10 +2,13 @@ Library
     structure BarnesHut
     structure Body
     structure Constants
+    structure RegionTree
     structure Point
     structure Tree
     structure Util
 is
+    ../../Lib/sig/RegionTree.sig
+    ../../Lib/sml/RegionTree.sml
     sig/Point.sig
     sml/BarnesHut.sml
     sml/Body.sml

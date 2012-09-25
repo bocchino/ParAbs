@@ -1,4 +1,4 @@
-structure ParTree :> PAR_TREE =
+structure RegionTree :> REGION_TREE =
 struct
 
 datatype 'a node = Inner of {data:'a option ref,
@@ -16,8 +16,8 @@ type 'a readOnlyNode = 'a node
 
 type 'a reduction = 'a option -> 'a option list -> 'a option
 
-fun empty arity indexFn = 
-    {arity=arity,
+fun empty ndim indexFn = 
+    {arity=Word.toInt (Word.<< (Word.fromInt 1, Word.fromInt ndim)),
      root=ref NONE,
      indexFn=indexFn}
 
@@ -41,7 +41,7 @@ fun insert {arity,root,indexFn} newData =
 		val idx = indexFn {data=newData,level=level}
 	    in
 		(Array.update (children,idx,insert' (Array.sub (children,idx)) 
-						     newData (level+1));
+						    newData (level+1));
 		 Inner {data=data,children=children})
 	    end
     in
