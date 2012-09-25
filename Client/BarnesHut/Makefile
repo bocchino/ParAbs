@@ -2,7 +2,7 @@ TARGET=barnes-hut
 SIG=${wildcard sig/*.sig}
 SML=${wildcard sml/*.sml}
 ML_RUN=${PAR_ABS}/bin/ml-run
-SIZE ?= 1024
+SIZE ?= 100000
 
 all : ${TARGET}.x86-darwin
 

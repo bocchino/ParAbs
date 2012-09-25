@@ -21,8 +21,8 @@ fun getBodies {rmin,rsize,bodies} = !bodies
 
 fun calcBoundingBox ({rmin,rsize,bodies}:t) =
     let
-	val max = Point.toArray (Point.const Real.maxFinite)
-	val min = Point.toArray (Point.const Real.minPos)
+	val max = Point.toArray (Point.const Real.minPos)
+	val min = Point.toArray (Point.const Real.maxFinite)
 	fun calcOneDim (i,x) = (if x < Array.sub (min,i) then
 				    Array.update (min,i,x)
 				else ();
@@ -49,5 +49,9 @@ fun calcBoundingBox ({rmin,rsize,bodies}:t) =
 	      rsize := 1.00002 * (!side))
 	 end)
     end
-		   
+
+fun stepSystem tree nstep = 
+    (* TODO *)
+    print "step system!\n"
+
 end

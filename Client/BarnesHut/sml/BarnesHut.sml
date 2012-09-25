@@ -123,6 +123,19 @@ fun initSystem () =
 	 Tree.calcBoundingBox tree)
     end
 
+fun doSimulation () =
+    let
+	val tnow = ref 0.0
+	val tout = ref 0.0
+	val i = ref 0
+    in
+	while (!tnow < Constants.tstop + 0.1 * Constants.dtime)
+	      andalso (!i < NSTEPS) do
+	    (Tree.stepSystem tree (!i);
+	     tnow := !tnow + Constants.dtime;
+	     i := !i + 1)
+    end
+
 val options = [{short="s",
 		long=["size"],
 		desc=GetOpt.ReqArg (SizeOpt,"size"),
@@ -145,6 +158,7 @@ fun main (name,args) =
 	  (opts,[]) => (List.app processOpt opts;
 			if !nbody mod 32 = 0 then
 			    (initSystem ();
+			     doSimulation();
 			     OS.Process.success)
 			else
 			    Util.err "data size must be divisible by 32")

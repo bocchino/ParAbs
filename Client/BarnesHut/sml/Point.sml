@@ -13,7 +13,7 @@ fun fromList list =
 
 fun fromArray array =
     if (Array.length array) = NDIM then
-	Array.foldl (op::) [] array
+	Array.foldr (op::) [] array
     else
 	raise ListPair.UnequalLengths
 
