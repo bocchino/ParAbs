@@ -11,6 +11,16 @@ fun fromList list =
     else
 	raise ListPair.UnequalLengths
 
+fun fromArray array =
+    if (Array.length array) = NDIM then
+	Array.foldl (op::) [] array
+    else
+	raise ListPair.UnequalLengths
+
+fun toList p = p
+
+fun toArray p = Array.fromList p
+
 fun const (r:real) = List.tabulate (NDIM,fn i => r)
 
 val zero = const 0.0

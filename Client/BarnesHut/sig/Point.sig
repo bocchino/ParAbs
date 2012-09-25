@@ -2,6 +2,9 @@ signature POINT =
 sig
     type t
     val fromList : real list -> t
+    val fromArray : real array -> t
+    val toList : t -> real list
+    val toArray : t -> real array
     val const : real -> t
     val zero : t
     val one : t

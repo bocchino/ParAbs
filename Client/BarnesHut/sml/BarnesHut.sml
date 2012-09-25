@@ -96,7 +96,9 @@ fun uniformTestData (bodies,segNum,cmr,cmv) =
 
 fun initSystem () =
     let
+	(* Accumulated center of mass *)
 	val cmr = ref Point.zero
+        (* Accumulated velocity *)
 	val cmv = ref Point.zero
 	val bodies:Body.body option array = Array.array (!nbody,NONE)
     in
@@ -106,14 +108,19 @@ fun initSystem () =
 	 let
 	     val i = ref 0
 	 in
+	     (* Create bodies *)
 	     while !i < 32 do
 		 (uniformTestData (bodies,!i,cmr,cmv);
 		  i := !i + 1)
 	 end;
+
+	 (* Normalize coordinates so average pos and vel are 0 *)
 	 cmr := Point.divs (!cmr,Real.fromInt (!nbody));
 	 cmv := Point.divs (!cmv,Real.fromInt (!nbody));
 	 Array.modify (Util.opt (Body.normalize (cmr,cmv))) bodies;
-	 Array.app (Util.printRet o Util.printOpt o (Util.opt Body.toString)) bodies)
+
+	 (* Calculate the bounding box for the tree *)
+	 Tree.calcBoundingBox tree)
     end
 
 val options = [{short="s",

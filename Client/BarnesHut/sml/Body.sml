@@ -7,6 +7,8 @@ type body = {mass:real,
 	     acc:Point.t,
 	     phi:real}
 
+fun getPos ({mass,pos,vel,acc,phi}:body) = pos
+
 fun new {mass:real,
 	 pos:Point.t,
 	 vel:Point.t} =
