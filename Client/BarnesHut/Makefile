@@ -10,7 +10,7 @@ ${TARGET}.x86-darwin : BarnesHut.cm ${SIG} ${SML}
 	ml-build BarnesHut.cm BarnesHut.main ${TARGET}
 
 test : ${TARGET}.x86-darwin
-	bin/barnes-hut ${SIZE}
+	bin/barnes-hut --size=${SIZE} --test
 
 clean ::
 	rm -f ${TARGET}.x86-darwin

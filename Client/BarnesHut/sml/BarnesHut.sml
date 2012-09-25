@@ -1,10 +1,16 @@
 structure BarnesHut =
 struct
 
+exception BadOpts
+
+datatype optResult = SizeOpt of string
+		   | TestOpt
+
 open Constants
 
 val nbody = ref 100000
 val tree = Tree.new
+val testMode = ref false
 
 fun uniformTestData (bodies,segNum,cmr,cmv) =
     let
@@ -18,7 +24,6 @@ fun uniformTestData (bodies,segNum,cmr,cmv) =
 	val t1 = ref 0.0
 	val coeff = 4.0
 	val i = ref 0
-	val k = ref 0
 	val seedFactor = segNum + 1
 	val seed = ref (123.0 * (Real.fromInt seedFactor))
 	val rad = ref 0.0
@@ -37,9 +42,8 @@ fun uniformTestData (bodies,segNum,cmr,cmv) =
 	      temp := Math.pow (!t1, ~2.0/3.0) - 1.0;
 	      r := 1.0 / (Math.sqrt (!temp));
 	      
-	      k := 0;
-
 	      let
+		  val k = ref 0
 		  val posList = ref ([]:real list)
 	      in
 		  while !k < NDIM do
@@ -50,7 +54,6 @@ fun uniformTestData (bodies,segNum,cmr,cmv) =
 		  posList := List.rev (!posList);
 		  pos := Point.fromList (!posList)
 	      end;
-
 	      cmr := Point.add (!cmr, !pos);
 						
 	      continue := true;
@@ -67,10 +70,10 @@ fun uniformTestData (bodies,segNum,cmr,cmv) =
 	      continue := true;
 	      while !continue do
 		   let
+		       val k = ref 0
 		       val velList = ref ([]:real list)
 		   in
-		       (k := 0;
-			while !k < NDIM do
+		       (while !k < NDIM do
 			    (seed := Util.rand (!seed);
 			     velList := (Util.xrand (~1.0,1.0,!seed)) :: (!velList);
 			     k := !k + 1);
@@ -107,18 +110,41 @@ fun initSystem () =
 		 (uniformTestData (bodies,!i,cmr,cmv);
 		  i := !i + 1)
 	 end;
-	 Array.app (Util.printRet o Util.printOpt o (Util.opt Body.toString)) bodies;
 	 cmr := Point.divs (!cmr,Real.fromInt (!nbody));
 	 cmv := Point.divs (!cmv,Real.fromInt (!nbody));
-	 Array.modify (Util.opt (Body.normalize (cmr,cmv))) bodies)
+	 Array.modify (Util.opt (Body.normalize (cmr,cmv))) bodies;
+	 Array.app (Util.printRet o Util.printOpt o (Util.opt Body.toString)) bodies)
     end
 
+val options = [{short="s",
+		long=["size"],
+		desc=GetOpt.ReqArg (SizeOpt,"size"),
+		help="set data size"},
+	       {short="t",
+		long=["test"],
+		desc=GetOpt.NoArg (fn () => TestOpt),
+		help="generate test output"}]
+
+fun processOpt (SizeOpt str) = (case Int.fromString str of
+				    SOME n => nbody := n
+				  | NONE => raise BadOpts)
+  | processOpt TestOpt = testMode := true
+
 fun main (name,args) =
-    (* TODO: Add command-line hooks for size and mode *)
-    if !nbody mod 32 = 0 then
-	(initSystem ();
-	 OS.Process.success)
-    else
-	(TextIO.output (TextIO.stdErr,"Number of bodies must be divisible by 32\n");
-	 OS.Process.failure)
+    (case GetOpt.getOpt {argOrder=GetOpt.Permute,
+			  options=options,
+			  errFn = fn s => print s}
+			 args of
+	  (opts,[]) => (List.app processOpt opts;
+			if !nbody mod 32 = 0 then
+			    (initSystem ();
+			     OS.Process.success)
+			else
+			    (TextIO.output (TextIO.stdErr,"Number of bodies must be divisible by 32\n");
+			     OS.Process.failure))
+	|_ => raise BadOpts)
+    handle BadOpts => (Util.printErr (GetOpt.usageInfo
+					  {header="usage: barnes-hut [opts]",
+					   options=options}); OS.Process.failure)
+	 | e => (Util.printErr "exception occurred"; OS.Process.failure)
 end

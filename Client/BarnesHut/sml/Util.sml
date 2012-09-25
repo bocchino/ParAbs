@@ -36,4 +36,7 @@ fun realToString r =
 	Substring.translate trans substr
     end
 
+fun printErr str =
+    TextIO.output (TextIO.stdErr,str)
+
 end
