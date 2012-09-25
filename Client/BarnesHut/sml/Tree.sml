@@ -142,33 +142,4 @@ fun centerOfMass (bodyOpt:body option) (bodiesOpt:body option list) =
 	    SOME (Body.updateMassPos bodyOpt normalized)
 	end
 
-(* Advance n-body system one time step *)
-fun stepSystem (tree,nstep) = 
-    let
-	val rmin = getRmin tree
-	val rsize = getRsize tree
-	val bodies = getBodies tree
-	fun indexFn {data:body,level:int} =
-	    let
-		val level' = Word32.toInt (Word32.>> (IMAX,Word.fromInt (level+1)))
-	    in
-		subindex (intcoord (data,rmin,rsize),level')
-	    end
-	val regionTree = RegionTree.empty NDIM indexFn
-	val readOnlyRegionTree = RegionTree.readOnly regionTree
-    in
-	(Array.app (Util.optApp (RegionTree.insert regionTree)) bodies;
-	 reorderBodies (tree,readOnlyRegionTree);
-	 (*printBodies (getBodies tree);*)
-	 (* Fill in center-of-mass coordinates *)
-	 ignore (RegionTree.reduce regionTree centerOfMass);
-	 (* Print out checksum, for now *)
-	 Util.printOpt (Util.opt (Point.toString o Body.getPos) 
-				 (RegionTree.getData 
-				      (RegionTree.getRoot readOnlyRegionTree)));
-	 print "\n";
-	 (* Stop after one time step, for now *)
-	 OS.Process.exit OS.Process.success)
-    end	
-
 end

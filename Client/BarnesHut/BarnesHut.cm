@@ -2,6 +2,7 @@ Library
     structure BarnesHut
     structure Body
     structure Constants
+    structure DataGen
     structure RegionTree
     structure Point
     structure Tree
@@ -13,6 +14,7 @@ is
     sml/BarnesHut.sml
     sml/Body.sml
     sml/Constants.sml
+    sml/DataGen.sml
     sml/Point.sml
     sml/Tree.sml
     sml/Util.sml
