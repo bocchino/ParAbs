@@ -13,21 +13,24 @@ open DataGen
 val nbody = ref 100000
 val tree = Tree.new
 
+(* Initialize the system *)
 fun initSystem () =
     let
 	(* Accumulated center of mass *)
 	val cmr = ref Point.zero
         (* Accumulated velocity *)
 	val cmv = ref Point.zero
+	(* Empty body array *)
 	val bodies:Body.body option array = Array.array (!nbody,NONE)
     in
 	(Tree.setRmin tree (Point.const ~2.0);
 	 Tree.setRsize tree (~2.0 * ~2.0);
 	 Tree.setBodies tree bodies;
+
+	 (* Create bodies and fill in array*)	
 	 let
 	     val i = ref 0
 	 in
-	     (* Create bodies *)
 	     while !i < 32 do
 		 (DataGen.uniformTestData (bodies,!i,cmr,cmv);
 		  i := !i + 1)
@@ -59,14 +62,13 @@ fun stepSystem nstep =
     in
 	(Array.app (Util.optApp (RegionTree.insert regionTree)) bodies;
 	 Tree.reorderBodies (tree,readOnlyRegionTree);
-	 printBodies (Tree.getBodies tree);
 	 (* Fill in center-of-mass coordinates *)
 	 ignore (RegionTree.reduce regionTree Tree.centerOfMass);
-	 (* Print out checksum, for now *)
-	 (*Util.printOpt (Util.opt (Point.toString o Body.getPos) 
-				 (RegionTree.getData 
-				      (RegionTree.getRoot readOnlyRegionTree)));
-	 print "\n";*)
+	 (* Compute gravity on particles *)
+	 Gravity.compute (tree,readOnlyRegionTree,nstep);
+	 (* Test, for now *)
+	 printBodies (Tree.getBodies tree);
+	 (* TODO: Update positions *)
 	 (* Stop after one time step, for now *)
 	 OS.Process.exit OS.Process.success)
     end	
@@ -116,5 +118,5 @@ fun main (name,args) =
 							{header="usage: barnes-hut [opts]",
 							 options=options}); 
 		       OS.Process.failure)
-(*	 | e => Util.err "exception occurred" *)
+	 | e => Util.err "exception occurred"
 end

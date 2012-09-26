@@ -18,5 +18,8 @@ output ::
 test : output
 	diff output ${DPJ_ROOT}/Benchmarks/Applications/BarnesHut/output
 
+compare :
+	diff output ${DPJ_ROOT}/Benchmarks/Applications/BarnesHut/output
+
 clean ::
 	rm -f ${TARGET}.x86-darwin output

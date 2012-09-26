@@ -3,6 +3,7 @@ Library
     structure Body
     structure Constants
     structure DataGen
+    structure Gravity
     structure RegionTree
     structure Point
     structure Tree
@@ -15,6 +16,7 @@ is
     sml/Body.sml
     sml/Constants.sml
     sml/DataGen.sml
+    sml/Gravity.sml
     sml/Point.sml
     sml/Tree.sml
     sml/Util.sml

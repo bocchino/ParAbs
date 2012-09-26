@@ -82,7 +82,7 @@ fun uniformTestData (bodies,segNum,cmr,cmv) =
 	      let
 		  val idx = start + (!i)
 	      in
-		  Array.update (bodies,idx,SOME (Body.new {id=idx,
+		  Array.update (bodies,idx,SOME (Body.new {ID=idx,
 							   mass=rockmass,
 							   pos=(!pos),
 							   vel=(!vel)}))

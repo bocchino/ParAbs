@@ -1,42 +1,47 @@
 structure Body =
 struct
 
-type body = {id:int,
+type body = {ID:int,
 	     mass:real,
 	     pos:Point.t,
 	     vel:Point.t,
 	     acc:Point.t,
 	     phi:real}
 
-fun getId {id,mass,pos,vel,acc,phi} = id
-fun getMass {id,mass,pos,vel,acc,phi} = mass
-fun getPos {id,mass,pos,vel,acc,phi} = pos
+fun getID {ID,mass,pos,vel,acc,phi} = ID
+fun getMass {ID,mass,pos,vel,acc,phi} = mass
+fun getPos {ID,mass,pos,vel,acc,phi} = pos
+fun getVel ({vel,...}:body) = vel
+fun getAcc ({acc,...}:body) = acc
 
-fun new {id:int,
+fun new {ID:int,
 	 mass:real,
 	 pos:Point.t,
 	 vel:Point.t} =
-    {id=id,
+    {ID=ID,
      mass=mass,
      pos=pos,
      vel=vel,
      acc=Point.zero,
      phi=0.0}
 
-fun updateMassPos (SOME {id,mass,pos,vel,acc,phi}) (mass',pos') =
-    SOME {id=id,mass=mass',pos=pos',vel=vel,acc=acc,phi=phi}
+fun updateMassPos (SOME {ID,mass,pos,vel,acc,phi}) (mass',pos') =
+    SOME {ID=ID,mass=mass',pos=pos',vel=vel,acc=acc,phi=phi}
   | updateMassPos NONE _ = NONE
 
+fun updateVelAccPhi ({ID,mass,pos,vel,acc,phi}) (vel',acc',phi') =
+    {ID=ID,mass=mass,pos=pos,vel=vel',acc=acc',phi=phi'}
+
 fun normalize (cmr,cmv)
-	      {id,mass,pos,vel,acc,phi} =
-    {id=id,
+	      {ID,mass,pos,vel,acc,phi} =
+    {ID=ID,
      mass=mass,
      pos=Point.sub (pos,!cmr),
      vel=Point.sub (vel,!cmv),
      acc=acc,
      phi=phi}
 
-fun toString {id,mass,pos,vel,acc,phi} =
+fun toString {ID,mass,pos,vel,acc,phi} =
     "Body: pos=" ^ (Point.toString pos)    
     
 fun printBodies bodies =

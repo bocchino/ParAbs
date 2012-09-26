@@ -21,6 +21,7 @@ fun getRmin {rmin,rsize,bodies} = !rmin
 fun getRsize {rmin,rsize,bodies} = !rsize
 fun getBodies {rmin,rsize,bodies} = !bodies
 
+(* Calculate bounding box for all bodies *)
 fun calcBoundingBox {rmin,rsize,bodies} =
     let
 	val max = Point.toArray (Point.const Real.minPos)
@@ -84,7 +85,7 @@ fun subindex (coords:int vector,level:int) =
 	 !i)
     end
 
-(* Compute integerized coordinates *)
+(* Compute integerized coordinates for a body *)
 fun intcoord (body:body,rmin:Point.t,rsize:real) =
     let
 	val pos = Point.toList (Body.getPos body)
