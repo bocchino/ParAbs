@@ -65,10 +65,13 @@ fun stepSystem nstep =
 	 (* Fill in center-of-mass coordinates *)
 	 ignore (RegionTree.reduce regionTree Tree.centerOfMass);
 	 (* Compute gravity on particles *)
-	 Gravity.compute (tree,readOnlyRegionTree,nstep);
-	 (* TODO: Update positions *)
-	 (* Stop after one time step, for now *)
-	 OS.Process.exit OS.Process.success)
+	 Gravity.computeForces (tree,readOnlyRegionTree,nstep);
+	 (* Update particle positions *)
+	 Gravity.updatePositions tree;
+	 (* Print bodies, for testing *)
+	 Body.printBodies (Tree.getBodies tree);
+	 (* Recalculate the bounding box for the tree *)
+	 Tree.calcBoundingBox tree)
     end	
 
 (* Do the simulation *)

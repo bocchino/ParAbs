@@ -39,6 +39,9 @@ fun updateAcc ({ID,mass,pos,vel,acc,phi}) (acc') =
 fun updateVelAccPhi ({ID,mass,pos,vel,acc,phi}) (vel',acc',phi') =
     {ID=ID,mass=mass,pos=pos,vel=vel',acc=acc',phi=phi'}
 
+fun updatePosVel ({ID,mass,pos,vel,acc,phi}) (pos',vel') =
+    {ID=ID,mass=mass,pos=pos',vel=vel',acc=acc,phi=phi}
+
 fun normalize (cmr,cmv)
 	      {ID,mass,pos,vel,acc,phi} =
     {ID=ID,

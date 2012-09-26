@@ -129,8 +129,7 @@ fun allBodies (tree:body RegionTree.readOnlyTree,
 				   else
 				       Body.updateAcc body acc0
 		 in
-		     (print ("acc0=" ^ (Point.toString acc0) ^ "\n");
-		      Array.update (newBodies,i,SOME newBody))
+		     Array.update (newBodies,i,SOME newBody)
 		 end)
 	    end
     in
@@ -139,9 +138,9 @@ fun allBodies (tree:body RegionTree.readOnlyTree,
     end
 
 (* Compute gravity on particles *)
-fun compute (tree:Tree.t,
-	     regionTree:body RegionTree.readOnlyTree,
-	     nstep:int) =
+fun computeForces (tree:Tree.t,
+		   regionTree:body RegionTree.readOnlyTree,
+		   nstep:int) =
 	 let
 	     val bodies = Tree.getBodies tree
 	     val rsize = Tree.getRsize tree
@@ -150,5 +149,27 @@ fun compute (tree:Tree.t,
 	 in
 	     Tree.setBodies tree newBodies
 	 end
+
+(* Update particle positions *)
+fun updatePositions (tree:Tree.t) =
+    let
+	val bodies = Tree.getBodies tree
+	fun oneBody body:body =
+	    let
+		val acc = Body.getAcc body
+		val vel = Body.getVel body
+		val pos = Body.getPos body
+		val dthf = 0.5 * dtime
+		val dvel = Point.muls (acc,dthf)
+		val vel1 = Point.add (vel,dvel)
+		val dpos = Point.muls (vel1,dtime)
+		val pos = Point.add (pos,dpos)
+		val vel = Point.add(vel1,dvel)
+	    in
+		Body.updatePosVel body (pos,vel)
+	    end
+    in
+	Array.modify (Util.opt oneBody) bodies
+    end
 
 end
