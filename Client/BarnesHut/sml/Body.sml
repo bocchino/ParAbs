@@ -52,7 +52,7 @@ fun normalize (cmr,cmv)
      phi=phi}
 
 fun toString {ID,mass,pos,vel,acc,phi} =
-    "Body: pos=" ^ (Point.toString pos)    
+    "Body " ^ (Int.toString ID) ^ ": pos=" ^ (Point.toString pos)    
     
 fun printBodies bodies =
     if (!Util.testMode) then
