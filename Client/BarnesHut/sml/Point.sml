@@ -52,6 +52,6 @@ fun toString (p:t) =
     in
 	"<" ^ (toString' p) ^ ">"
     end
-	    
+
 end
 

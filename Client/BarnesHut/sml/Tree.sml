@@ -139,7 +139,7 @@ fun centerOfMass (bodyOpt:body option) (bodiesOpt:body option list) =
 	    val (mass,pos) = List.foldl combine (0.0,Point.zero) bodiesOpt 
 	    val normalized = (mass,Point.divs (pos,mass))
 	in
-	    SOME (Body.updateMassPos bodyOpt normalized)
+	    Body.updateMassPos bodyOpt normalized
 	end
 
 end

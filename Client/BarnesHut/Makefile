@@ -12,8 +12,11 @@ ${TARGET}.x86-darwin : BarnesHut.cm ${SIG} ${SML}
 run : ${TARGET}.x86-darwin
 	bin/barnes-hut --size=${SIZE}
 
-test : ${TARGET}.x86-darwin
-	bin/barnes-hut --size=${SIZE} --test
+output ::
+	bin/barnes-hut --size=${SIZE} --test > $@
+
+test : output
+	diff output ${DPJ_ROOT}/Benchmarks/Applications/BarnesHut/output
 
 clean ::
-	rm -f ${TARGET}.x86-darwin
+	rm -f ${TARGET}.x86-darwin output

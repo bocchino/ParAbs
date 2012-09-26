@@ -79,9 +79,14 @@ fun uniformTestData (bodies,segNum,cmr,cmv) =
 	      vel := Point.muls (!vel,!rsc1);
 	      cmv := Point.add (!cmv,!vel);
 
-	      Array.update (bodies,start + (!i),SOME (Body.new {mass=rockmass,
-								pos=(!pos),
-								vel=(!vel)}));
+	      let
+		  val idx = start + (!i)
+	      in
+		  Array.update (bodies,idx,SOME (Body.new {id=idx,
+							   mass=rockmass,
+							   pos=(!pos),
+							   vel=(!vel)}))
+	      end;
 
 	      i := !i + 1))
 
