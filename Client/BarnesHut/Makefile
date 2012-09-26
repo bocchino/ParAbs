@@ -19,7 +19,7 @@ test : output
 	make compare
 
 compare :
-	diff output ref-output/${SIZE}.txt
+	diff -q output ref-output/${SIZE}.txt
 
 clean ::
 	rm -f ${TARGET}.x86-darwin output
