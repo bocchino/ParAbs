@@ -82,7 +82,7 @@ fun getData node =
     case node of
 	SOME (Leaf data) => SOME (!data)
       | SOME (Inner {data,children}) => !data
-      | _ => NONE
+      | NONE => NONE
 
 fun isLeaf node =
     case node of

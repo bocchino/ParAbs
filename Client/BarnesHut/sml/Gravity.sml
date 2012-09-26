@@ -50,7 +50,6 @@ fun twoBodies (body:body,gd:gravityData) =
     else
 	let
 	    val acc0 = getAcc0 gd
-	    val ai = getAI gd
 	    val dr = Point.sub (Body.getPos body,getPos0 gd)
 	    val drsq = Point.dot (dr,dr) + eps * eps
 	    val drabs = Math.sqrt drsq
@@ -59,8 +58,12 @@ fun twoBodies (body:body,gd:gravityData) =
 	    val mor3 = phii / drsq
 	in
 	    (setPhi0 gd (phi0 - phii);
-	     setAcc0 gd (Point.add (acc0,ai));
-	     setAI gd (Point.muls (dr,mor3));
+	     let
+		 val ai = Point.muls (dr,mor3)
+	     in
+		 (setAI gd ai;
+		  setAcc0 gd (Point.add (acc0,ai)))
+	     end;
 	     setDR gd dr)
 	end
 		   
@@ -114,13 +117,20 @@ fun allBodies (tree:body RegionTree.readOnlyTree,
 		(bodyTree (tree,rsize,gd);
 		 let
 		     val acc0 = getAcc0 gd
-		     val phi0 = getPhi0 gd
-		     val dacc = Point.sub (acc0,acc1)
-		     val dvel = Point.muls (dacc,dthf)
-		     val vel = Point.add (Body.getVel body,dvel)
-		     val newBody = Body.updateVelAccPhi body (vel,acc0,phi0)
+		     val newBody = if nstep > 0 then
+				       let
+					   val phi0 = getPhi0 gd
+					   val dacc = Point.sub (acc0,acc1)
+					   val dvel = Point.muls (dacc,dthf)
+					   val vel = Point.add (Body.getVel body,dvel)
+				       in
+					   Body.updateVelAccPhi body (vel,acc0,phi0)
+				       end
+				   else
+				       Body.updateAcc body acc0
 		 in
-		     Array.update (newBodies,i,SOME newBody)
+		     (print ("acc0=" ^ (Point.toString acc0) ^ "\n");
+		      Array.update (newBodies,i,SOME newBody))
 		 end)
 	    end
     in

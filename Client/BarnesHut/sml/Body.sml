@@ -8,9 +8,9 @@ type body = {ID:int,
 	     acc:Point.t,
 	     phi:real}
 
-fun getID {ID,mass,pos,vel,acc,phi} = ID
-fun getMass {ID,mass,pos,vel,acc,phi} = mass
-fun getPos {ID,mass,pos,vel,acc,phi} = pos
+fun getID ({ID,...}:body) = ID
+fun getMass ({mass,...}:body) = mass
+fun getPos ({pos,...}:body) = pos
 fun getVel ({vel,...}:body) = vel
 fun getAcc ({acc,...}:body) = acc
 
@@ -25,9 +25,16 @@ fun new {ID:int,
      acc=Point.zero,
      phi=0.0}
 
-fun updateMassPos (SOME {ID,mass,pos,vel,acc,phi}) (mass',pos') =
-    SOME {ID=ID,mass=mass',pos=pos',vel=vel,acc=acc,phi=phi}
-  | updateMassPos NONE _ = NONE
+fun updateMasPos {ID,mass,pos,vel,acc,phi} (mass',pos') =
+    {ID=ID,mass=mass',pos=pos',vel=vel,acc=acc,phi=phi}
+
+fun updateMassPosOpt (SOME body) (mass',pos') = SOME (updateMasPos body (mass',pos'))
+  | updateMassPosOpt NONE (mass',pos') = SOME {ID= ~1,mass=mass',pos=pos',
+					       vel=Point.zero,
+					       acc=Point.zero,phi=0.0}
+
+fun updateAcc ({ID,mass,pos,vel,acc,phi}) (acc') =
+    {ID=ID,mass=mass,pos=pos,vel=vel,acc=acc',phi=phi}
 
 fun updateVelAccPhi ({ID,mass,pos,vel,acc,phi}) (vel',acc',phi') =
     {ID=ID,mass=mass,pos=pos,vel=vel',acc=acc',phi=phi'}

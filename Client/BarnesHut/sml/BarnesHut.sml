@@ -66,8 +66,6 @@ fun stepSystem nstep =
 	 ignore (RegionTree.reduce regionTree Tree.centerOfMass);
 	 (* Compute gravity on particles *)
 	 Gravity.compute (tree,readOnlyRegionTree,nstep);
-	 (* Test, for now *)
-	 printBodies (Tree.getBodies tree);
 	 (* TODO: Update positions *)
 	 (* Stop after one time step, for now *)
 	 OS.Process.exit OS.Process.success)
