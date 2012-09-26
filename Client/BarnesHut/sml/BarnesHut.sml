@@ -39,15 +39,14 @@ fun initSystem () =
 	 (* Normalize coordinates so average pos and vel are 0 *)
 	 cmr := Point.divs (!cmr,Real.fromInt (!nbody));
 	 cmv := Point.divs (!cmv,Real.fromInt (!nbody));
-	 Array.modify (Util.opt (Body.normalize (cmr,cmv))) bodies;
-
-	 (* Calculate the bounding box for the tree *)
-	 Tree.calcBoundingBox tree)
+	 Array.modify (Util.opt (Body.normalize (cmr,cmv))) bodies)
     end
 
 (* Advance n-body system one time step *)
 fun stepSystem nstep = 
     let
+	(* Calculate the bounding box for the tree *)
+	val _ = Tree.calcBoundingBox tree
 	val rmin = Tree.getRmin tree
 	val rsize = Tree.getRsize tree
 	val bodies = Tree.getBodies tree
@@ -67,11 +66,7 @@ fun stepSystem nstep =
 	 (* Compute gravity on particles *)
 	 Gravity.computeForces (tree,readOnlyRegionTree,nstep);
 	 (* Update particle positions *)
-	 Gravity.updatePositions tree;
-	 (* Print bodies, for testing *)
-	 Body.printBodies (Tree.getBodies tree);
-	 (* Recalculate the bounding box for the tree *)
-	 Tree.calcBoundingBox tree)
+	 Gravity.updatePositions tree)
     end	
 
 (* Do the simulation *)
@@ -111,6 +106,8 @@ fun main (name,args) =
 			if !nbody mod 32 = 0 then
 			    (initSystem ();
 			     doSimulation();
+			     (* Print bodies, for testing *)
+			     Body.printBodies (Tree.getBodies tree);
 			     OS.Process.success)
 			else
 			    Util.err "data size must be divisible by 32")

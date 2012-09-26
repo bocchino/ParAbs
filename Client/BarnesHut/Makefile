@@ -2,7 +2,7 @@ TARGET=barnes-hut
 SIG=${wildcard sig/*.sig}
 SML=${wildcard sml/*.sml}
 ML_RUN=${PAR_ABS}/bin/ml-run
-SIZE ?= 100000
+SIZE ?= 16000
 
 all : ${TARGET}.x86-darwin
 
@@ -16,10 +16,10 @@ output ::
 	bin/barnes-hut --size=${SIZE} --test > $@
 
 test : output
-	diff output ${DPJ_ROOT}/Benchmarks/Applications/BarnesHut/output
+	make compare
 
 compare :
-	diff output ${DPJ_ROOT}/Benchmarks/Applications/BarnesHut/output
+	diff output ref-output/${SIZE}.txt
 
 clean ::
 	rm -f ${TARGET}.x86-darwin output
