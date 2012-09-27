@@ -18,7 +18,8 @@ sig
     (* Apply an update function in parallel to the array.  The
        update function can read the read-only state stored
        in the updater and update the array, but can not otherwise
-       touch any mutable state. *)
+       touch any global mutable state. The update function may
+       allocate and use its own (local) mutable state. *)
     val update : ('a,'b) updater -> ('a,'b) updateFn -> unit
 
     (* Get the array out of the updater *)
