@@ -4,7 +4,7 @@
 signature ARRAY_MODIFIER =
 sig
 
-    (* An modifier consists of a mutable array parameterized by
+    (* A modifier consists of a mutable array parameterized by
        a value type 'a, and read-only state with type 'b *)
     (*shared*) type ('a, (*readonly*) 'b) modifier
 
@@ -16,7 +16,7 @@ sig
     type ('a, (*readonly*) 'b) modifyFn = 'b -> 'a -> 'a
     type ('a, (*readonly*) 'b) modifyiFn = 'b -> (int * 'a) -> 'a
 		    
-    (* Apply an modify function in parallel to the array.  The
+    (* Apply a modify function in parallel to the array.  The
        modify function can read the read-only state stored
        in the modifier and modify the array, but can not otherwise
        touch any global mutable state. The modify function may
