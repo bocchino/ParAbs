@@ -101,39 +101,45 @@ fun allBodies (tree:body RegionTree.readOnlyTree,
 	       bodies:body option Array.array,
 	       nstep:int) =
     let
-	val newBodies = Array.array (Array.length bodies,NONE:body option)
-	fun oneBody (i,NONE:body option) = ()
-	  | oneBody (i,(SOME body):body option) =
-	    let
-		val dthf = 0.5 * dtime
-		val acc1 = Body.getAcc body
-		val gd = {skipID = Body.getID body,
-			  pos0 = Body.getPos body,
-			  phi0 = ref 0.0,
-			  acc0 = ref Point.zero,
-			  ai = ref Point.zero,
-			  dr = ref Point.zero}:gravityData
-	    in
-		(bodyTree (tree,rsize,gd);
-		 let
-		     val acc0 = getAcc0 gd
-		     val newBody = if nstep > 0 then
-				       let
-					   val phi0 = getPhi0 gd
-					   val dacc = Point.sub (acc0,acc1)
-					   val dvel = Point.muls (dacc,dthf)
-					   val vel = Point.add (Body.getVel body,dvel)
-				       in
-					   Body.updateVelAccPhi body (vel,acc0,phi0)
-				       end
-				   else
-				       Body.updateAcc body acc0
-		 in
-		     Array.update (newBodies,i,SOME newBody)
-		 end)
-	    end
+	fun modifyiFn (tree,bodies) (i,_) =
+	    case ParArray.sub (bodies,i) of
+		NONE      => NONE
+	      | SOME body =>
+		let
+		    val dthf = 0.5 * dtime
+		    val acc1 = Body.getAcc body
+		    val gd = {skipID = Body.getID body,
+			      pos0 = Body.getPos body,
+			      phi0 = ref 0.0,
+			      acc0 = ref Point.zero,
+			      ai = ref Point.zero,
+			      dr = ref Point.zero}:gravityData
+		in
+		    (bodyTree (tree,rsize,gd);
+		     let
+			 val acc0 = getAcc0 gd
+			 val newBody = if nstep > 0 then
+					   let
+					       val phi0 = getPhi0 gd
+					       val dacc = Point.sub (acc0,acc1)
+					       val dvel = Point.muls (dacc,dthf)
+					       val vel = Point.add (Body.getVel body,dvel)
+					   in
+					       Body.updateVelAccPhi body (vel,acc0,phi0)
+					   end
+				       else
+					   Body.updateAcc body acc0
+		     in
+			 SOME newBody
+		     end)
+		end
+	val readOnlyBodies = ParArray.readOnly (ParArray.fromArray bodies)
+	val modifier = ArrayModifier.modifier 
+			   (Array.length bodies,NONE:body option)
+			   (tree,readOnlyBodies)
+	val newBodies = ArrayModifier.getArray modifier
     in
-	(Array.appi oneBody bodies;
+	(ArrayModifier.modifyi modifier modifyiFn;
 	 newBodies)
     end
 

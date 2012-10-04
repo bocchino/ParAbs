@@ -10,6 +10,7 @@ sig
     (* Create a new array *)
     val array : int * 'a -> 'a array
     val fromList : 'a list -> 'a array
+    val fromArray : 'a Array.array -> 'a array
 
     (* Obtain a read-only array *)
     val readOnly : 'a array -> 'a readOnlyArray

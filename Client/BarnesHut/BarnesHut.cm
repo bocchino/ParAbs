@@ -1,14 +1,20 @@
 Library
+    structure ArrayModifier
     structure BarnesHut
     structure Body
     structure Constants
     structure DataGen
     structure Gravity
+    structure ParArray
     structure RegionTree
     structure Point
     structure Tree
     structure Util
 is
+    ../../Lib/sig/ArrayModifier.sig
+    ../../Lib/sml/ArrayModifier.sml
+    ../../Lib/sig/ParArray.sig
+    ../../Lib/sml/ParArray.sml
     ../../Lib/sig/RegionTree.sig
     ../../Lib/sml/RegionTree.sml
     sig/Point.sig

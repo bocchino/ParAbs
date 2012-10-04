@@ -6,6 +6,7 @@ struct
 
 fun array args = Array.array args
 fun fromList args = Array.fromList args
+fun fromArray arr = arr
 
 fun readOnly arr = arr
 
