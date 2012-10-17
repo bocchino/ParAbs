@@ -1,4 +1,4 @@
-structure DisjointArraySlices : DISJOINT_ARRAY_SLICES =
+structure DisjointArraySlices :> DISJOINT_ARRAY_SLICES =
 struct
 
 type 'a slices = 'a ArraySlice.slice list
