@@ -23,7 +23,6 @@ let slice (arr, i, sz) =
   let len = Array.length arr
   let makeSlice (arr, i, sz) =
     let _ = checkRange (i, len - sz - 1)
-    let _ = checkRange (sz, len)
     { array = arr; start = i; size = sz }
   match sz with
     Some sz -> makeSlice (arr, i, sz)
@@ -32,12 +31,15 @@ let slice (arr, i, sz) =
 let full arr = slice (arr, 0, None)
 
 let subslice (sl, i, sz) =
+  let _ = checkRange (i, (getSize sl) - sz - 1)
   slice (getArray sl, (getStart sl) + i, sz)
 
 let length sl = getSize sl
 
 let sub (sl, i) =
+  let _ = checkRange (i, (getSize sl) - 1)
   Array.get (getArray sl) ((getStart sl) + i) 
 
 let update (sl, i, elt) =
+  let _ = checkRange (i, (getSize sl) - 1)
   Array.set (getArray sl) ((getStart sl) + i) elt
