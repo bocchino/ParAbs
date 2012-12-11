@@ -8,11 +8,11 @@ type 'a slice = {
 
 exception Subscript
 
-let getArray { array=array; start=_; size=_ } : 'a array = array
+let getArray { array=array; start=_; size=_ } = array
 
-let getStart { array=_; start=start; size=_ } : int = start
+let getStart { array=_; start=start; size=_ } = start
 
-let getSize { array=_; start=_; size=size } : int = size
+let getSize { array=_; start=_; size=size } = size
 
 let checkRange (i,bound) =
   if i < 0 || i > bound then
