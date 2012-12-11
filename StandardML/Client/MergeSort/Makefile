@@ -1,8 +1,6 @@
 TARGET=mergesort
-PML=../../
 SIG=${wildcard sig/*.sig}
 SML=${wildcard sml/*.sml}
-ML_RUN=${PML}/bin/ml-run
 SIZE ?= 1024
 
 all : ${TARGET}.x86-darwin
