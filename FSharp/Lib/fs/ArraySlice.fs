@@ -20,7 +20,7 @@ let checkRange (i,bound) =
   else ()
 
 let makeSlice (arr, i, sz, max) =
-  let _ = checkRange (i, max - sz - 1)
+  let _ = checkRange (i, max - sz)
   { array = arr; start = i; size = sz }
 
 let slice (arr, i, sz) =
