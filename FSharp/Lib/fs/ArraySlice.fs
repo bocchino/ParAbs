@@ -22,7 +22,7 @@ let checkRange (i,bound) =
 let slice (arr, i, sz) =
   let len = Array.length arr
   let makeSlice (arr, i, sz) =
-    let _ = checkRange (i, len - 1)
+    let _ = checkRange (i, len - sz - 1)
     let _ = checkRange (sz, len)
     { array = arr; start = i; size = sz }
   match sz with
