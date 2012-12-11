@@ -1,7 +1,7 @@
 module ArrayModifier
 
 (*shared*)
-type modifier<'a, (*readonly*) 'b> = 'a array * 'b
+type modifier<'a, (*readonly*) 'b> = array<'a> * 'b
 
 type modifyFn<'a, (*readonly*) 'b> = 'b -> 'a -> 'a
 
