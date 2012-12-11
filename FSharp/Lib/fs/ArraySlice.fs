@@ -19,20 +19,22 @@ let checkRange (i,bound) =
     raise Subscript
   else ()
 
+let makeSlice (arr, i, sz, max) =
+  let _ = checkRange (i, max - sz - 1)
+  { array = arr; start = i; size = sz }
+
 let slice (arr, i, sz) =
   let len = Array.length arr
-  let makeSlice (arr, i, sz) =
-    let _ = checkRange (i, len - sz - 1)
-    { array = arr; start = i; size = sz }
   match sz with
-    Some sz -> makeSlice (arr, i, sz)
-  | None    -> makeSlice (arr, i, len)
+    Some sz -> makeSlice (arr, i, sz, len)
+  | None    -> makeSlice (arr, i, len, len)
 
 let full arr = slice (arr, 0, None)
 
 let subslice (sl, i, sz) =
-  let _ = checkRange (i, (getSize sl) - sz - 1)
-  slice (getArray sl, (getStart sl) + i, sz)
+  let start = getStart sl
+  let max = start + getSize sl
+  makeSlice (getArray sl, start + i, sz, max)
 
 let length sl = getSize sl
 
