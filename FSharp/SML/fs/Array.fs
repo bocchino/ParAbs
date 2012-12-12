@@ -18,3 +18,4 @@ let foldr f init arr =
 
 let fromList (list:'a list) = [| for elt in list -> elt |]
 
+let app f arr = Array.iter f arr

@@ -12,3 +12,4 @@ val foldr : ('a -> 'b -> 'b) -> 'b -> 'a array -> 'b
 
 val fromList : 'a list -> 'a array
 
+val app : ('a -> unit) -> 'a array -> unit
