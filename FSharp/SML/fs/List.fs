@@ -8,3 +8,12 @@ let foldl f init arr =
     
 let foldr f init arr =
     List.foldBack f arr init
+
+let tabulate (n,f) =
+    let rec tabulate' (i,result) =
+        if i < 0 then
+            result
+        else
+            tabulate' (i - 1, f(i) :: result)
+    tabulate' (n - 1,[])
+    

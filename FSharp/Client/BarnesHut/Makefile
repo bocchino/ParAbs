@@ -1,11 +1,11 @@
 SML=../../SML
 LIB=../../LIB
 FSI=${SML}/fsi/*.fsi \
-    ${LIB}/fsi/*.fsi
-#    fsi/*.fsi
+    ${LIB}/fsi/*.fsi \
+    fsi/*.fsi
 FS=${SML}/fs/*.fs \
    ${LIB}/fs/*.fs \
-   fs/*.fs
+   fs/Constants.fs fs/Util.fs fs/Point.fs
 TARGET=BarnesHut.exe
 
 ${TARGET} : ${FSI} ${FS}

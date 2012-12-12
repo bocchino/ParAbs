@@ -16,4 +16,5 @@ let foldl f init arr =
 let foldr f init arr =
     Array.foldBack f arr init
 
-    
+let fromList (list:'a list) = [| for elt in list -> elt |]
+
