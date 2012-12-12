@@ -1,0 +1,11 @@
+Create and initialize body array B
+for each timestep do
+    B := ts(B)
+
+fun ts B =
+    T = maketree(B)
+    U = updater with fresh force array F, T as readonly, B as readonly
+    Use U to update F in parallel, reading T and B
+    U' = updater with fresh body array B', F as readonly
+    Use U' to update B' in parallel, reading F
+    return B'

@@ -21,29 +21,28 @@ let empty ndim indexFn =
      root=ref None;
      indexFn=indexFn}
 
-let makeArray len init = [| for i in 1 .. len -> init |]
-
 let insert {arity=arity;root=root;indexFn=indexFn} newData =
     let rec insert' root newData level =
         Some (match root with
               None -> Leaf (ref newData)
             | Some (Leaf oldData) ->
-              let children = makeArray arity None
+              let children = SML.Array.array (arity, None)
               let inner = {data=ref None;children=children}
               let idx = indexFn (!oldData,level)
-              (Array.set children idx root;
+              (SML.Array.update (children,idx,root);
                insert'' inner newData level)
             | Some (Inner inner) -> insert'' inner newData level)
     and insert'' {data=data;children=children} newData level =
         let idx = indexFn (newData,level)
-        (Array.set children idx (insert' (Array.get children idx) 
-                                          newData (level+1));
+        let child = SML.Array.sub (children,idx)
+        let child = insert' child newData (level+1)
+        (SML.Array.update (children,idx,child);
          Inner {data=data;children=children})
     root := insert' (!root) newData 0
 
 let reduce {arity=arity;root=root;indexFn=indexFn} reduction =
     let rec reduce' root =
-        let append = fun a -> fun b -> b :: a
+        let cons = fun x -> fun y -> x :: y
         match root with
             Some (Leaf data) -> 
             let result = match reduction (Some (!data)) [] with
@@ -51,7 +50,7 @@ let reduce {arity=arity;root=root;indexFn=indexFn} reduction =
                            | None       -> !data
             (data := result; Some result)
           | Some (Inner {data=data;children=children}) -> 
-            let childList = Array.fold append [] children
+            let childList = SML.Array.foldl cons [] children
             (* TODO: Should be parallel *)
             let dataList = List.map reduce' childList
             let result = reduction (!data) dataList

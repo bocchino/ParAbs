@@ -1,4 +1,4 @@
-module ArraySlice
+module SML.ArraySlice
 
 type 'a slice = {
   array : 'a array;
@@ -20,14 +20,17 @@ let checkRange (i,bound) =
   else ()
 
 let makeSlice (arr, i, sz, max) =
-  let _ = checkRange (i, max - sz)
+  let sz =
+      match sz with
+          Some sz ->
+              let _ = checkRange (i, max - sz)
+              sz
+        | None    -> max
   { array = arr; start = i; size = sz }
 
 let slice (arr, i, sz) =
   let len = Array.length arr
-  match sz with
-    Some sz -> makeSlice (arr, i, sz, len)
-  | None    -> makeSlice (arr, i, len, len)
+  makeSlice (arr, i, sz, len)
 
 let full arr = slice (arr, 0, None)
 
@@ -40,8 +43,8 @@ let length sl = getSize sl
 
 let sub (sl, i) =
   let _ = checkRange (i, (getSize sl) - 1)
-  Array.get (getArray sl) ((getStart sl) + i) 
+  SML.Array.sub (getArray sl, (getStart sl) + i) 
 
 let update (sl, i, elt) =
   let _ = checkRange (i, (getSize sl) - 1)
-  Array.set (getArray sl) ((getStart sl) + i) elt
+  SML.Array.update (getArray sl, (getStart sl) + i, elt)
