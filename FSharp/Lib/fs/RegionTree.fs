@@ -42,7 +42,6 @@ let insert {arity=arity;root=root;indexFn=indexFn} newData =
 
 let reduce {arity=arity;root=root;indexFn=indexFn} reduction =
     let rec reduce' root =
-        let cons = fun x -> fun y -> x :: y
         match root with
             Some (Leaf data) -> 
             let result = match reduction (Some (!data)) [] with
@@ -50,7 +49,7 @@ let reduce {arity=arity;root=root;indexFn=indexFn} reduction =
                            | None       -> !data
             (data := result; Some result)
           | Some (Inner {data=data;children=children}) -> 
-            let childList = SML.Array.foldl cons [] children
+            let childList = SML.Array.foldl SML.List.cons [] children
             (* TODO: Should be parallel *)
             let dataList = List.map reduce' childList
             let result = reduction (!data) dataList
