@@ -15,3 +15,7 @@ val fromList : 'a list -> 'a array
 val app : ('a -> unit) -> 'a array -> unit
 
 val appi : (int * 'a -> unit) -> 'a array -> unit
+
+val modify : ('a -> 'a) -> 'a array -> unit
+
+val modifyi : (int * 'a -> 'a) -> 'a array -> unit

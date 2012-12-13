@@ -24,3 +24,11 @@ let app f arr = Array.iter f arr
 let appi f arr =
     let f' = fun x -> fun y -> f (x,y)
     Array.iteri f' arr
+
+let modify f arr =
+    let iter i a = update (arr, i, f a)
+    Array.iteri iter arr
+
+let modifyi f arr =
+    let iter i a = update (arr, i, f (i,a))
+    Array.iteri iter arr
