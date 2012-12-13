@@ -10,11 +10,12 @@ let update (arr,idx,elt) =
     Array.set arr idx elt
 
 let foldl f init arr =
-    let f' = fun x -> fun y -> f y x
+    let f' = fun x -> fun y -> f (y,x)
     in Array.fold f' init arr
     
 let foldr f init arr =
-    Array.foldBack f arr init
+    let f' = fun x -> fun y -> f (x,y)
+    Array.foldBack f' arr init
 
 let fromList (list:'a list) = [| for elt in list -> elt |]
 

@@ -1,6 +1,6 @@
 module SML.List
 
-let cons x y = x :: y
+let cons (x,y) = x :: y
 
 let foldl f init arr =
     let f' = fun x -> fun y -> f (y,x)
