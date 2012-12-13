@@ -5,7 +5,7 @@ FSI=${SML}/fsi/*.fsi \
     fsi/*.fsi
 FS=${SML}/fs/*.fs \
    ${LIB}/fs/*.fs \
-   fs/Constants.fs fs/Util.fs fs/Point.fs fs/Body.fs
+   fs/Constants.fs fs/Util.fs fs/Point.fs fs/Body.fs fs/DataGen.fs
 TARGET=BarnesHut.exe
 
 ${TARGET} : ${FSI} ${FS}
