@@ -18,8 +18,8 @@ TARGET=BarnesHut.exe
 ${TARGET} : ${FSI} ${FS}
 	fsharpc $+  -o $@
 
-BH.exe : fs/BH.fs
-	fsharpc $+ -o $@
+run :
+	mono ${TARGET}
 
 clean :
 	rm -f ${TARGET}

@@ -10,7 +10,7 @@ open Constants
 open DataGen
 
 
-let nbody = ref 32
+let nbody = ref 64
 let tree = Tree.create
 
 (* Initialize the system *)
@@ -28,8 +28,8 @@ let initSystem () =
      (* Create bodies and fill in array*)   
      let i = ref 0
      while !i < 32 do
-     (DataGen.uniformTestData (bodies,!i,cmr,cmv);
-      i := !i + 1);
+         (DataGen.uniformTestData (bodies,!i,cmr,cmv);
+         i := !i + 1);
 
      (* Normalize coordinates so average pos and vel are 0 *)
      cmr := Point.divs (!cmr,float (!nbody));

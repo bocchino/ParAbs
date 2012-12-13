@@ -71,9 +71,8 @@ let uniformTestData (bodies,segNum,cmr,cmv) =
           vel := Point.muls (!vel,!rsc1);
           cmv := Point.add (!cmv,!vel);
 
-          let idx = start + (!i)
-          SML.Array.update (bodies,idx,Some (Body.create (idx,
-                                                          rockmass,
-                                                          !pos,
-                                                          !vel)));
+          let idx = start + (!i);
+          let body = Body.create (idx,rockmass,!pos,!vel);
+          SML.Array.update (bodies,idx,Some body);
+
           i := !i + 1))
