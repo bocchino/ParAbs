@@ -2,6 +2,8 @@ module DAS
 
 open AS
 
+open Array.Parallel
+
 type slices = ArraySliceT list
 type partitions = ArraySliceT list list
 
@@ -31,7 +33,7 @@ module DisjointArraySlices =
           splitOne a b
       List.map so (List.zip s x)
   let rec transpose (p : partitions) : partitions =
-      if (List.isEmpty p) then
+      if List.isEmpty (List.head p) then
         []
       else
         List.map List.head p :: transpose (List.map List.tail p)
@@ -40,8 +42,10 @@ module DisjointArraySlices =
   let rev (s : slices) : slices =
       List.rev s
   let apply (a : (slices -> Unit)) (p : partitions) : Unit =
-      List.map a p
-      ()
+      let ass = Array.ofList p
+      Array.Parallel.iter a ass
+(*      List.map a p
+      () *)
   let getArrays (s : slices) : ArraySliceT list =
       s
   let getPartitions (p : partitions) : ArraySliceT list list =
