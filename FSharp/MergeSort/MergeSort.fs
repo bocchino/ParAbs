@@ -8,8 +8,6 @@ let QUICK_SIZE = 0x800
 let INSERTION_SIZE = 0x400
 
 let seqMerge (a : ArraySliceT) (b : ArraySliceT) (out : ArraySliceT) : ArraySliceT =
-    printfn "%A" a
-    printfn "%A" b
     let mutable aPos = 0
     let aLen = ArraySlice.length a
     let mutable bPos = 0
@@ -143,12 +141,11 @@ let checkSorted (a : ArraySliceT) =
     for i in 1 .. (ArraySlice.length a) - 1 do
         if ArraySlice.sub a (i - 1) > ArraySlice.sub a i then
           Console.WriteLine("not sorted!")
-        else
-          Console.WriteLine("sorted!")
+
+let DEFAULT_SIZE = 0x1000000
 
 let Main =
-    let t1 = randArray 10
+    let t1 = randArray DEFAULT_SIZE
     printfn "%A" t1
-    quickSort t1
+    sort t1
     checkSorted t1
-    Console.WriteLine("Hello bla bla bla")
