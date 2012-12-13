@@ -133,7 +133,7 @@ let sort (a : ArraySliceT) : Unit =
 
 let randArray (size : int) : ArraySliceT =
     let rnd = System.Random()
-    let arr = Array.init size (fun index -> rnd.Next(0, 10000))
+    let arr = Array.init size (fun index -> rnd.Next(0, size * 2))
     ArraySlice.full arr
 
 let checkSorted (a : ArraySliceT) =
