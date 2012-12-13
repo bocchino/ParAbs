@@ -43,9 +43,10 @@ let muls (p:t,s:double) = List.map (fun x -> x * s) p
 let divs (p:t,s:double) = List.map (fun x -> x / s) p
 
 let dot (p1:t,p2:t) =
-    let mul = fun (x,y) -> x * y
+    let mul (x,y) = x * y
+    let plus (x,y) = x + y
     let product = List.map mul (SML.ListPair.zipEq (p1,p2))
-    SML.List.foldl (+) 0.0 product
+    SML.List.foldl plus 0.0 product
 
 let toString (p:t) =
     let rec toString' list =
