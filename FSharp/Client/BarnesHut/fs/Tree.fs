@@ -7,9 +7,9 @@ type t = {rmin:Point.t ref;
           rsize:float ref;
           bodies:body option array ref}
 
-let fresh:t = {rmin=ref Point.zero;
-               rsize=ref 0.0;
-               bodies=ref (SML.Array.array (0,None))}
+let create:t = {rmin=ref Point.zero;
+                rsize=ref 0.0;
+                bodies=ref (SML.Array.array (0,None))}
 
 let setRmin {rmin=rmin;rsize=rsize;bodies=bodies} p = rmin := p
 let setBodies {rmin=rmin;rsize=rsize;bodies=bodies} a = bodies := a
