@@ -144,8 +144,13 @@ let checkSorted (a : ArraySliceT) =
 
 let DEFAULT_SIZE = 0x1000000
 
+open System.Diagnostics;
+
 let Main =
     let t1 = randArray DEFAULT_SIZE
     printfn "%A" t1
+    let stopWatch = Stopwatch.StartNew()
     sort t1
+    stopWatch.Stop()
+    printfn "Time required for execution: %f"  stopWatch.Elapsed.TotalMilliseconds
     checkSorted t1
