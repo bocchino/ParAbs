@@ -16,6 +16,9 @@ FS=${SML}/fs/*.fs  \
 TARGET=BarnesHut.exe
 
 ${TARGET} : ${FSI} ${FS}
+	fsharpc $+  -o $@
+
+BH.exe : fs/BH.fs
 	fsharpc $+ -o $@
 
 clean :

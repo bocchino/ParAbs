@@ -9,7 +9,8 @@ open Body
 open Constants
 open DataGen
 
-let nbody = ref 100000
+
+let nbody = ref 32
 let tree = Tree.create
 
 (* Initialize the system *)
@@ -67,4 +68,15 @@ let doSimulation () =
          tnow := !tnow + Constants.dtime;
          i := !i + 1)
 
-(* TODO: Handle command-line arguments *)
+
+let size = ref 100000
+
+if !nbody % 32 = 0 then
+    (initSystem ();
+     doSimulation();
+     (* Print bodies, for testing *)
+     Body.printBodies (Tree.getBodies tree))
+else
+    Util.err "data size must be divisible by 32"
+
+

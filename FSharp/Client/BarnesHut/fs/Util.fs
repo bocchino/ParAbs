@@ -6,7 +6,7 @@ let A = 16807.0
 let M = 2147483647.0
 
 (* Are we in testing mode? *)
-let testMode = ref false
+let testMode = ref true
 
 let rand (seed:double) =
     let t = A * seed + 1.0

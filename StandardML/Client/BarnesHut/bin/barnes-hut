@@ -1,4 +1,4 @@
 ML_RUN=${PAR_ABS}/bin/ml-run
-BARNES_HUT=${PAR_ABS}/Client/BarnesHut/barnes-hut.x86-darwin
+BARNES_HUT=${PAR_ABS}/StandardML/Client/BarnesHut/barnes-hut.x86-darwin
 
 ${ML_RUN} ${BARNES_HUT} "$@"
