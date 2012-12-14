@@ -16,12 +16,10 @@ include ../Makefile.common
 
 .PHONY : run-seq
 run-seq : $(TARGET_SEQ)
-	make $(TARGET_SEQ)
 	${MONO} $< --size=${SIZE} ${OPTS}
 
 .PHONY : output-seq
 output-seq ::
-	make $(TARGET_SEQ)
 	${MONO} $(TARGET_SEQ) --size=${SIZE} --output > output
 
 .PHONY : test-seq
@@ -32,12 +30,10 @@ test-seq :
 
 .PHONY : run-par
 run-par : $(TARGET_PAR)
-	make $(TARGET_PAR)
 	${MONO} $< --size=${SIZE} ${OPTS}
 
 .PHONY : output-par
 output-par ::
-	make $(TARGET_PAR)
 	${MONO} $(TARGET_PAR) --size=${SIZE} --output > output
 
 .PHONY : test-par
