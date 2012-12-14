@@ -43,9 +43,9 @@ Setup
 
 1. To use either version of the library, you must set the environment
    variable `PAR_ABS` to point to the top of the installation tree (i.e.,
-   the directory in which this file is locate).
+   the directory in which this file resides).
 
-2. To use the SML/NJ version of the library, you must set the environment
+2. To use the SML version of the library, you must set the environment
    variable `SML_NJ` to point your SML/NJ installation.
 
 3. To use the F# version of the library, you must set the environment
