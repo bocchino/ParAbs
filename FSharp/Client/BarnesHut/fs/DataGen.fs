@@ -26,53 +26,55 @@ let uniformTestData (bodies,segNum,cmr,cmv) =
     let continuing = ref true
     let rockmass = 1.0 / ((float nbody) / 32.0)
     let start = nbodyx * segNum
-    (while !i < nbodyx do
-         (seed := Util.rand (!seed);
-          t1 := Util.xrand (0.0,MFRAC,!seed);
-          temp := SML.Math.pow(!t1,-2.0/3.0) - 1.0;
-          r := 1.0 / (sqrt (!temp));
+    while !i < nbodyx do
+        seed := Util.rand (!seed)
+        t1 := Util.xrand (0.0,MFRAC,!seed)
+        temp := SML.Math.pow (!t1,-2.0/3.0) - 1.0
+        r := 1.0 / (sqrt (!temp))
 
-          let k = ref 0
-          let posList = ref ([]:float list)
-          while !k < NDIM do
-              (seed := Util.rand (!seed);
-               r := Util.xrand (0.0,MFRAC,!seed);
-               posList := (coeff * !r) :: (!posList);
-               k := !k + 1);
-          posList := List.rev (!posList);
-          pos := Point.fromList (!posList);
+        let k = ref 0
+        let posList = ref ([]:float list)
+        while !k < NDIM do
+            seed := Util.rand (!seed)
+            r := Util.xrand (0.0,MFRAC,!seed)
+            posList := (coeff * !r) :: (!posList)
+            k := !k + 1
 
-          cmr := Point.add (!cmr, !pos);
+        posList := List.rev (!posList)
+        pos := Point.fromList (!posList)
 
-          continuing := true;
-          while !continuing do
-              (seed := Util.rand (!seed);
-               x := Util.xrand (0.0,1.0,!seed);
-               seed := Util.rand (!seed);
-               y := Util.xrand(0.0,0.1,!seed);
-               continuing := !y > (!x * !x * SML.Math.pow (1.0 - !x * !x,3.5)));
+        cmr := Point.add (!cmr, !pos)
 
-          v := (sqrt 2.0) * !x / (SML.Math.pow (1.0 + !r * !r, 0.25));
-          rad := vsc * !v;
+        continuing := true
+        while !continuing do
+            seed := Util.rand (!seed)
+            x := Util.xrand (0.0,1.0,!seed)
+            seed := Util.rand (!seed)
+            y := Util.xrand(0.0,0.1,!seed)
+            continuing := !y > (!x * !x * SML.Math.pow (1.0 - !x * !x,3.5))
 
-          continuing := true;
-          while !continuing do
-               let k = ref 0
-               let velList = ref ([]:float list)
-               (while !k < NDIM do
-                    (seed := Util.rand (!seed);
-                     velList := (Util.xrand (-1.0,1.0,!seed)) :: (!velList);
-                     k := !k + 1);
-                velList := List.rev (!velList);
-                vel := Point.fromList (!velList);
-                rsq := Point.dot (!vel,!vel);
-                continuing := !rsq > 1.0);
-          rsc1 := !rad / (sqrt (!rsq));
-          vel := Point.muls (!vel,!rsc1);
-          cmv := Point.add (!cmv,!vel);
+        v := (sqrt 2.0) * !x / (SML.Math.pow (1.0 + !r * !r, 0.25))
+        rad := vsc * !v
 
-          let idx = start + (!i);
-          let body = Body.create (idx,rockmass,!pos,!vel);
-          SML.Array.update (bodies,idx,Some body);
+        continuing := true
+        while !continuing do
+            let k = ref 0
+            let velList = ref ([]:float list)
+            while !k < NDIM do
+                seed := Util.rand (!seed)
+                velList := (Util.xrand (-1.0,1.0,!seed)) :: (!velList)
+                k := !k + 1
+            velList := List.rev (!velList)
+            vel := Point.fromList (!velList)
+            rsq := Point.dot (!vel,!vel)
+            continuing := !rsq > 1.0
+            
+        rsc1 := !rad / (sqrt (!rsq))
+        vel := Point.muls (!vel,!rsc1)
+        cmv := Point.add (!cmv,!vel)
 
-          i := !i + 1))
+        let idx = start + (!i)
+        let body = Body.create (idx,rockmass,!pos,!vel)
+        SML.Array.update (bodies,idx,Some body)
+
+        i := !i + 1

@@ -42,3 +42,5 @@ test-par :
 	make -C $(SML_BH) output SIZE=$(SIZE)
 	diff -u ./output $(SML_BH)/output
 
+.PHONY : test
+test : test-seq test-par

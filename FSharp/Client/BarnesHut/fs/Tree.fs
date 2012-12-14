@@ -34,16 +34,16 @@ let calcBoundingBox {rmin=rmin;rsize=rsize;bodies=bodies} =
             Some body ->
                 SML.Array.appi calcOneDim (Point.toArray (Body.getPos body))
           | None -> ()
-    (SML.Array.app calcAllDims (!bodies);
-     let min = Point.fromArray min
-     let max = Point.sub (Point.fromArray max,min)
-     let side = ref 0.0
-     let calcSide x = if !side < x then
-                          side := x
-                      else ()
-     (SML.List.app calcSide (Point.toList max);
-      rmin := Point.adds(min,-(!side)/100000.0);
-      rsize := 1.00002 * (!side)))
+    SML.Array.app calcAllDims (!bodies)
+    let min = Point.fromArray min
+    let max = Point.sub (Point.fromArray max,min)
+    let side = ref 0.0
+    let calcSide x = if !side < x then
+                         side := x
+                     else ()
+    SML.List.app calcSide (Point.toList max)
+    rmin := Point.adds(min,-(!side)/100000.0)
+    rsize := 1.00002 * (!side)
 
 (* Find the sub index into the cell children *)
 let subindex (coords:int array,level:int) =
@@ -53,20 +53,21 @@ let subindex (coords:int array,level:int) =
     let testCoord x =
         let cWord = SML.Array.sub (coords,x)
         not ((cWord &&& testWord) = 0)
-    (if testCoord 0 then
-         (i := !i + (NSUB >>> 1);
-          yes := true)
-     else ();
-     let k = ref 1
-     while !k < NDIM do
-         (if ((testCoord (!k)) && not (!yes)) || 
-             ((not (testCoord (!k))) && !yes) then
-              (i := !i + (NSUB >>> (!k+1));
-               yes := true)
-          else
-              yes := false;
-          k := !k + 1);
-     !i)
+    if testCoord 0 then
+        i := !i + (NSUB >>> 1)
+        yes := true
+    else ()
+    let k = ref 1
+
+    while !k < NDIM do
+        if ((testCoord (!k)) && not (!yes)) || 
+          ((not (testCoord (!k))) && !yes) then
+            i := !i + (NSUB >>> (!k+1))
+            yes := true
+        else
+            yes := false
+        k := !k + 1
+    !i
 
 (* Compute integerized coordinates for a body *)
 let intcoord (body:body,rmin:Point.t,rsize:float) =
@@ -88,13 +89,13 @@ let reorderBodies (tree,readOnlyRegionTree) =
     let rec reorderBodies' nodeOpt =
         match nodeOpt with
             Some node ->
-            (match RegionTree.getChildren node with
-                 Some children -> SML.Array.app reorderBodies' children
-               | None -> (SML.Array.update (newBodies,!index,RegionTree.getData (Some node));
-                          index := !index + 1))
+            match RegionTree.getChildren node with
+                Some children -> SML.Array.app reorderBodies' children
+              | None -> SML.Array.update (newBodies,!index,RegionTree.getData (Some node))
+                        index := !index + 1
           | None -> ()
-    (reorderBodies' (RegionTree.getRoot readOnlyRegionTree);
-     setBodies tree newBodies)
+    reorderBodies' (RegionTree.getRoot readOnlyRegionTree)
+    setBodies tree newBodies
 
 (* Reduction function for center-of-mass computation *)
 let centerOfMass (bodyOpt:body option) (bodiesOpt:body option list) =
