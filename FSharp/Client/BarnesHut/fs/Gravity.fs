@@ -25,7 +25,7 @@ let setDR   {skipID=skipID;pos0=pos0;phi0=phi0;acc0=acc0;ai=ai;dr=dr} dr'   = dr
 (* Should we subdivide a node? *)
 let subdivide (node:body RegionTree.readOnlyNode)
               (dsq:float,tolsq:float,gd:gravityData) =
-    if (RegionTree.isLeaf node) then
+    if RegionTree.isLeaf node then
         false
     else
         match RegionTree.getData (Some node) with
@@ -35,8 +35,8 @@ let subdivide (node:body RegionTree.readOnlyNode)
               let pos0 = getPos0 gd
               let dr = Point.sub (pos,pos0)
               let drsq = Point.dot (dr,dr)
-              (setDR gd dr;
-               tolsq * drsq < dsq)
+              setDR gd dr
+              tolsq * drsq < dsq
 
 (* Compute single body-body interaction *)
 let twoBodies (body:body,gd:gravityData) =
@@ -51,11 +51,11 @@ let twoBodies (body:body,gd:gravityData) =
         let phi0 = getPhi0 gd
         let phii = (Body.getMass body) / drabs
         let mor3 = phii / drsq
-        (setPhi0 gd (phi0 - phii);
-         let ai = Point.muls (dr,mor3)
-         (setAI gd ai;
-          setAcc0 gd (Point.add (acc0,ai)));
-         setDR gd dr)
+        let ai = Point.muls (dr,mor3)
+        setPhi0 gd (phi0 - phii)
+        setAI gd ai
+        setAcc0 gd (Point.add (acc0,ai))
+        setDR gd dr
                    
 (* Recursively compute gravity induced by tree *)
 let bodyTree (tree:body RegionTree.readOnlyTree,
@@ -93,24 +93,24 @@ let allBodies (tree:body RegionTree.readOnlyTree,
                         acc0 = ref Point.zero;
                         ai = ref Point.zero;
                         dr = ref Point.zero}
-              (bodyTree (tree,rsize,gd);
-               let acc0 = getAcc0 gd
-               let newBody =
-                   if nstep > 0 then
-                       let phi0 = getPhi0 gd
-                       let dacc = Point.sub (acc0,acc1)
-                       let dvel = Point.muls (dacc,dthf)
-                       let vel = Point.add (Body.getVel body,dvel)
-                       Body.updateVelAccPhi body (vel,acc0,phi0)
-                   else
-                       Body.updateAcc body acc0
-               Some newBody)
+              bodyTree (tree,rsize,gd)
+              let acc0 = getAcc0 gd
+              let newBody =
+                  if nstep > 0 then
+                      let phi0 = getPhi0 gd
+                      let dacc = Point.sub (acc0,acc1)
+                      let dvel = Point.muls (dacc,dthf)
+                      let vel = Point.add (Body.getVel body,dvel)
+                      Body.updateVelAccPhi body (vel,acc0,phi0)
+                  else
+                      Body.updateAcc body acc0
+              Some newBody
     let readOnlyBodies = ParArray.readOnly (ParArray.fromArray bodies)
     let modifier =
         ArrayModifier.modifier (Array.length bodies,None) (tree,readOnlyBodies)
     let newBodies = ArrayModifier.getArray modifier
-    (ArrayModifier.modifyi modifier modifyiFn;
-    newBodies)
+    ArrayModifier.modifyi modifier modifyiFn
+    newBodies
 
 (* Compute gravity on particles *)
 let computeForces (tree:Tree.t,
