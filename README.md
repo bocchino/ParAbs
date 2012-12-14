@@ -53,3 +53,5 @@ Setup
    compiler (typically `fsc` in Windows, `fsharpc` for Mono).
    Additionally, if you are using Mono, then you must set the variable
    `MONO` equal to the command used to invoke Mono (typically `mono`).
+   If you are not using Mono, then the variable `MONO` must be
+   undefined.
