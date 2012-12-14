@@ -38,6 +38,12 @@ installing Mono:
 
 http://www.mono-project.com/Main_Page
 
+Also, the F# version of the library uses Python to generate some
+source files, so you will need a working Python interpreter.
+
+Finally, the build environment assumes Unix build tools, so on Windows
+you will need to install Cygwin, make, etc.
+
 Setup
 -----
 
