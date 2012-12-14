@@ -9,7 +9,7 @@ FS=fs/Constants.fs \
    fs/BarnesHut.fs
 TARGET=BarnesHut
 SIZE ?= 64
-SML_BH=../../../StandardML/Client/BarnesHut
+SML_BH=$(PAR_ABS)/StandardML/Client/BarnesHut
 CLEAN=rm -f output
 
 include ../Makefile.common
