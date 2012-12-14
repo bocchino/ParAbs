@@ -27,12 +27,12 @@ parallel implementation.
 Dependencies
 ------------
 
-To use the SML version of the library, you must install Standard ML of
+To use the SML version of ParAbs, you must install Standard ML of
 New Jersey (SML/NJ):
 
 http://www.smlnj.org/dist/working/110.74/index.html
 
-To use the F# version of the library, you must have a working F#
+To use the F# version of ParAbs, you must have a working F#
 installation.  On a non-Windows machine, you can get F# by first
 installing Mono:
 
@@ -41,14 +41,14 @@ http://www.mono-project.com/Main_Page
 Setup
 -----
 
-1. To use either version of the library, you must set the environment
-   variable `PAR_ABS` to point to the top of the installation tree (i.e.,
-   the directory in which this file resides).
+1. To use either version of ParAbs, you must set the environment
+   variable `PAR_ABS` to point to the top of the installation tree
+   (i.e., the directory in which this file resides).
 
-2. To use the SML version of the library, you must set the environment
+2. To use the SML version of ParAbs, you must set the environment
    variable `SML_NJ` to point your SML/NJ installation.
 
-3. To use the F# version of the library, you must set the environment
+3. To use the F# version of ParAbs, you must set the environment
    variable `FSHARPC` equal to the command used to invoke the F#
    compiler (typically `fsc` in Windows, `fsharpc` for Mono).
    Additionally, if you are using Mono, then you must set the variable

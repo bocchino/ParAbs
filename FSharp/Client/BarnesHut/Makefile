@@ -16,29 +16,29 @@ include ../Makefile.common
 
 .PHONY : run-seq
 run-seq : $(TARGET_SEQ)
-	${MONO} $< --size=${SIZE} ${OPTS}
+	$(MONO) $< --size=$(SIZE) $(OPTS)
 
 .PHONY : output-seq
 output-seq ::
-	${MONO} $(TARGET_SEQ) --size=${SIZE} --output > output
+	$(MONO) $(TARGET_SEQ) --size=$(SIZE) --output > output
 
 .PHONY : test-seq
 test-seq :
-	make output-seq SIZE=${SIZE}
-	make -C ${SML_BH} output SIZE=${SIZE}
-	diff -u ./output ${SML_BH}/output
+	make output-seq SIZE=$(SIZE)
+	make -C $(SML_BH) output SIZE=$(SIZE)
+	diff -u ./output $(SML_BH)/output
 
 .PHONY : run-par
 run-par : $(TARGET_PAR)
-	${MONO} $< --size=${SIZE} ${OPTS}
+	$(MONO) $< --size=$(SIZE) $(OPTS)
 
 .PHONY : output-par
 output-par ::
-	${MONO} $(TARGET_PAR) --size=${SIZE} --output > output
+	$(MONO) $(TARGET_PAR) --size=$(SIZE) --output > output
 
 .PHONY : test-par
 test-par :
-	make output-par SIZE=${SIZE}
-	make -C ${SML_BH} output SIZE=${SIZE}
-	diff -u ./output ${SML_BH}/output
+	make output-par SIZE=$(SIZE)
+	make -C $(SML_BH) output SIZE=$(SIZE)
+	diff -u ./output $(SML_BH)/output
 
