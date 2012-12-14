@@ -1,0 +1,11 @@
+$(TARGET) : $(FSI) $(FS)
+ifndef FSHARPC
+	@echo "Set variable FSHARPC to your F# compiler"
+	@echo "On a non-windows system, set MONO to point to mono"
+else
+	$(FSHARPC) $+ -o $@
+endif
+
+clean :
+	rm -f ${TARGET}
+	$(CLEAN)

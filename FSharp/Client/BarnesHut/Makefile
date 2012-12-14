@@ -16,14 +16,16 @@ FS=${SML}/fs/*.fs  \
 TARGET=BarnesHut.exe
 SIZE ?= 64
 SML_BH=../../../StandardML/Client/BarnesHut
+CLEAN=rm -f output
 
-${TARGET} : ${FSI} ${FS}
-	${FSHARPC} $+  -o $@
+include ../Makefile.common
 
-run : ${TARGET}
+run ::
+	make ${TARGET}
 	${MONO} $< --size=${SIZE} ${OPTS}
 
 output ::
+	make ${TARGET}
 	${MONO} ${TARGET} --size=${SIZE} --output > output
 
 test ::
@@ -31,6 +33,4 @@ test ::
 	make -C ${SML_BH} output SIZE=${SIZE}
 	diff -u ./output ${SML_BH}/output
 
-clean :
-	rm -f ${TARGET} output
 
