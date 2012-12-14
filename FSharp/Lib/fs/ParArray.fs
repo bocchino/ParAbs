@@ -15,14 +15,13 @@ let length args = Array.length args
 let sub args = SML.Array.sub args
 let update args = SML.Array.update args
 
-let iteri = Array.iteri (* parallel *)
+let iteri = Array$PARALLEL$iteri
 
-(* TODO: Should be parallel *)
 let modify f arr =
     let iter i a = SML.Array.update (arr, i, f a)
-    Array.iteri iter arr
+    iteri iter arr
 
 let modifyi f arr =
     let iter i a = SML.Array.update (arr, i, f (i,a))
-    Array.iteri iter arr
+    iteri iter arr
 

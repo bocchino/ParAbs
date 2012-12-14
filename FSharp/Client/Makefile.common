@@ -1,11 +1,39 @@
-$(TARGET) : $(FSI) $(FS)
+FSHARP=$(PAR_ABS)/FSharp
+SML=$(FSHARP)/SML
+LIB=$(FSHARP)/Lib
+FSI_LIB=$(SML)/fsi/*.fsi \
+    	$(LIB)/fsi/*.fsi
+FS_LIB=$(SML)/fs/*.fs \
+       $(LIB)/fs/*.fs
+FS_LIB_SEQ=$(SML)/fs/*.fs      \
+	   $(LIB)/fs/seq/*.fs
+FS_LIB_PAR=$(SML)/fs/*.fs      \
+	   $(LIB)/fs/par/*.fs
+TARGET_SEQ=$(TARGET)-seq.exe
+TARGET_PAR=$(TARGET)-par.exe
+
+.PHONY : all
+all : $(TARGET_SEQ) $(TARGET_PAR)
+
+$(TARGET_SEQ) : $(FSI_LIB) $(FSI) $(FS_LIB) $(FS)
 ifndef FSHARPC
 	@echo "Set variable FSHARPC to your F# compiler"
-	@echo "On a non-windows system, set MONO to point to mono"
+	@echo "On a non-Windows system, set MONO to point to mono"
 else
-	$(FSHARPC) $+ -o $@
+	make -C $(LIB)/fs
+	$(FSHARPC) $(FS_LIB_SEQ) $(FS) -o $@
 endif
 
+$(TARGET_PAR) : $(FSI_LIB) $(FSI) $(FS_LIB) $(FS)
+ifndef FSHARPC
+	@echo "Set variable FSHARPC to your F# compiler"
+	@echo "On a non-Windows system, set MONO to point to mono"
+else
+	make -C $(LIB)/fs
+	$(FSHARPC) $(FS_LIB_PAR) $(FS) -o $@
+endif
+
+.PHONY : clean
 clean :
-	rm -f ${TARGET}
+	rm -f $(TARGET_SEQ) $(TARGET_PAR)
 	$(CLEAN)

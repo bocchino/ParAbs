@@ -1,11 +1,5 @@
-SML=../../SML
-LIB=../../LIB
-FSI=${SML}/fsi/*.fsi \
-    ${LIB}/fsi/*.fsi \
-    fsi/*.fsi
-FS=${SML}/fs/*.fs  \
-   ${LIB}/fs/*.fs  \
-   fs/Constants.fs \
+FSI=fsi/*.fsi
+FS=fs/Constants.fs \
    fs/Util.fs      \
    fs/Point.fs     \
    fs/Body.fs      \
@@ -13,24 +7,42 @@ FS=${SML}/fs/*.fs  \
    fs/Tree.fs      \
    fs/Gravity.fs   \
    fs/BarnesHut.fs
-TARGET=BarnesHut.exe
+TARGET=BarnesHut
 SIZE ?= 64
 SML_BH=../../../StandardML/Client/BarnesHut
 CLEAN=rm -f output
 
 include ../Makefile.common
 
-run ::
-	make ${TARGET}
+.PHONY : run-seq
+run-seq : $(TARGET_SEQ)
+	make $(TARGET_SEQ)
 	${MONO} $< --size=${SIZE} ${OPTS}
 
-output ::
-	make ${TARGET}
-	${MONO} ${TARGET} --size=${SIZE} --output > output
+.PHONY : output-seq
+output-seq ::
+	make $(TARGET_SEQ)
+	${MONO} $(TARGET_SEQ) --size=${SIZE} --output > output
 
-test ::
-	make output SIZE=${SIZE}
+.PHONY : test-seq
+test-seq :
+	make output-seq SIZE=${SIZE}
 	make -C ${SML_BH} output SIZE=${SIZE}
 	diff -u ./output ${SML_BH}/output
 
+.PHONY : run-par
+run-par : $(TARGET_PAR)
+	make $(TARGET_PAR)
+	${MONO} $< --size=${SIZE} ${OPTS}
+
+.PHONY : output-par
+output-par ::
+	make $(TARGET_PAR)
+	${MONO} $(TARGET_PAR) --size=${SIZE} --output > output
+
+.PHONY : test-par
+test-par :
+	make output-par SIZE=${SIZE}
+	make -C ${SML_BH} output SIZE=${SIZE}
+	diff -u ./output ${SML_BH}/output
 
