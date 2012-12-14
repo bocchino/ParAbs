@@ -14,20 +14,23 @@ FS=${SML}/fs/*.fs  \
    fs/Gravity.fs   \
    fs/BarnesHut.fs
 TARGET=BarnesHut.exe
-MONO=mono
-
-bin/${TARGET} : ${TARGET}
-	cp $< $@
+SIZE ?= 64
+SML_BH=../../../StandardML/Client/BarnesHut
 
 ${TARGET} : ${FSI} ${FS}
-	fsharpc $+  -o $@
+	${FSHARPC} $+  -o $@
 
-run-mono : bin/${TARGET}
-	${MONO} $<
+run : ${TARGET}
+	${MONO} $< --size=${SIZE} ${OPTS}
 
-run : bin/${TARGET}
-	$<
+output ::
+	${MONO} ${TARGET} --size=${SIZE} --output > output
+
+test ::
+	make output SIZE=${SIZE}
+	make -C ${SML_BH} output SIZE=${SIZE}
+	diff -u ./output ${SML_BH}/output
 
 clean :
-	rm -f ${TARGET}
+	rm -f ${TARGET} output
 

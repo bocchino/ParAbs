@@ -53,7 +53,7 @@ let toString (body:body) =
     "Body " + (sprintf "%d" ID) + ": pos=" + (Point.toString pos)
     
 let printBodies bodies =
-    if (!Util.testMode) then
+    if (!Util.outputMode) then
         let printFn = fun x -> Util.print ((toString x) + "\n")
         SML.Array.app (Util.optApp printFn) bodies
     else

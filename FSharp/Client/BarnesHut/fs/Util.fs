@@ -5,8 +5,8 @@ open System
 let A = 16807.0
 let M = 2147483647.0
 
-(* Are we in testing mode? *)
-let testMode = ref true
+(* Are we in output mode? *)
+let outputMode = ref false
 
 let rand (seed:double) =
     let t = A * seed + 1.0
@@ -43,5 +43,5 @@ let printRet () = print "\n"
 let realToString r = sprintf "%.6f" r
 
 let err str =
-    eprintfn "%s" ("barnes-hut: " + str + "\n")
+    eprintfn "%s" ("barnes-hut: " + str)
 

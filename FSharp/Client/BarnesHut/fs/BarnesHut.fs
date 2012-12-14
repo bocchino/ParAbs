@@ -68,8 +68,29 @@ let doSimulation () =
          tnow := !tnow + Constants.dtime;
          i := !i + 1)
 
+let (|Prefix|_|) (p:string) (s:string) =
+    if s.StartsWith(p) then
+        Some (s.Substring (p.Length))
+    else
+        None
 
-let size = ref 100000
+let usage () =
+    printfn "usage: barnes-hut [opts]"
+    printfn "  --size=size  set data size"
+    printfn "  --output     generate test output"
+
+let parseArg i arg =
+    try
+        match (i,arg) with
+          | (0,_)                -> ()
+          | (_,Prefix "--output" "") -> Util.outputMode := true
+          | (_,Prefix "--size=" sz)  -> nbody := System.Int32.Parse sz
+          | _                        -> raise BadOpts
+    with
+        _ -> usage ()
+
+let args = System.Environment.GetCommandLineArgs()
+Array.iteri parseArg args
 
 if !nbody % 32 = 0 then
     (initSystem ();
