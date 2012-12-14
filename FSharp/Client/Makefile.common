@@ -15,7 +15,13 @@ TARGET_PAR=$(TARGET)-par.exe
 .PHONY : all
 all : $(TARGET_SEQ) $(TARGET_PAR)
 
-$(TARGET_SEQ) : $(FSI_LIB) $(FSI) $(FS_LIB) $(FS)
+.PHONY : PA
+PA :
+ifndef PAR_ABS
+	@echo "Set variable PAR_ABS to your ParAbs installation"
+endif
+
+$(TARGET_SEQ) : PA $(FSI_LIB) $(FSI) $(FS_LIB) $(FS)
 ifndef FSHARPC
 	@echo "Set variable FSHARPC to your F# compiler"
 	@echo "On a non-Windows system, set MONO to point to mono"
