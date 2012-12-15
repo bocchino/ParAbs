@@ -1,5 +1,4 @@
 import sys
-import subprocess
 import commands
 
 def execute (cmd):
@@ -18,5 +17,6 @@ for arg in sys.argv:
     out = execute ("echo " + arg + " | " + translator)
     newargs += (" " + out)
 
+print "[translated to " + newargs + "]"
 print (execute (newargs))
                    
