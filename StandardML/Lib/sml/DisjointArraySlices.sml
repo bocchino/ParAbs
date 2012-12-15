@@ -33,7 +33,7 @@ fun splitOne (slice,is) =
     end
 
 fun split sliceList isList =
-    List.map splitOne (ListPair.zipEq (sliceList,isList))
+    ListPair.map splitOne (sliceList,isList)
 
 fun rev arrs = List.rev arrs
 
