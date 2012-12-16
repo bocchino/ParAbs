@@ -43,9 +43,11 @@ module DisjointArraySlices =
       List.rev s
   let apply (a : (slices -> Unit)) (p : partitions) : Unit =
       let ass = Array.ofList p
+#if parallel
       Array.Parallel.iter a ass
-(*      List.map a p
-      () *)
+#else
+      Array.iter a ass
+#endif
   let getArrays (s : slices) : ArraySliceT list =
       s
   let getPartitions (p : partitions) : ArraySliceT list list =
