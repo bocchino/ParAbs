@@ -20,7 +20,9 @@ and the effect should be the same as if you had said
 `Cw A1w ... Anw`
 
 The only catch is that because of command-line parsing issues, you
-don't write spaces in any of the Ai commands; instead you write ::.
+don't write spaces in any of the Ai commands; instead you write
+
+`::`
 
 As an example, if your makefile says $(FSHARPC) A1 ... An, where
 setting FSHARPC=fsharpc works on Unix, then on windows (inside Cygwin)
