@@ -10,7 +10,7 @@ open Constants
 open DataGen
 
 
-let nbody = ref 64
+let nbody = ref 64000
 let depth = ref 1
 let tree = Tree.create
 
@@ -95,9 +95,14 @@ let parseArg i arg =
 let args = System.Environment.GetCommandLineArgs()
 Array.iteri parseArg args
 
+open System.Diagnostics
+
 if !nbody % 32 = 0 then
     (initSystem ();
+     let stopWatch = Stopwatch.StartNew();
      doSimulation();
+     stopWatch.Stop();
+     printfn "Time required for execution: %f"  stopWatch.Elapsed.TotalMilliseconds;
      (* Print bodies, for testing *)
      Body.printBodies (Tree.getBodies tree))
 else
