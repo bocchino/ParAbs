@@ -20,7 +20,7 @@ Overview
 The subdirectory `StandardML` provides the reference version of the
 library, together with some sample client code.  This version is
 written in Standard ML (SML).  Because SML is a sequential language,
-this implementation of the library is parallel.
+this implementation of the library is sequential.
 
 The subdirectory `FSharp` provides an F# port of the library.  It is a
 parallel implementation.
