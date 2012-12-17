@@ -41,7 +41,10 @@ http://www.mono-project.com/Main_Page
 
 Finally, the build environment currently assumes Unix build tools, so
 on Windows you will need to install Cygwin, make, etc. A Visual Studio
-project for the F# library is under development.
+project for the F# library is under development.  For help with the
+nettlesome problem of feeding Unix paths to Windows programs, see
+
+`FSharp/Scripts/README.md`
 
 Setup
 -----

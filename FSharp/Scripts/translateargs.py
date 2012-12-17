@@ -9,8 +9,8 @@ progname = sys.argv.pop(0)
 if len(sys.argv) < 3:
     sys.exit ("usage: " + progname + " command translator [args]")
 
-command = sys.argv.pop(0).replace(':',' ')
-translator = sys.argv.pop(0).replace(':',' ')
+command = sys.argv.pop(0).replace('::',' ')
+translator = sys.argv.pop(0).replace('::',' ')
 
 newargs = command
 for arg in sys.argv:
