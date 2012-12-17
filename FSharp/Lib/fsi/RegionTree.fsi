@@ -42,7 +42,9 @@ val empty : int -> 'a indexFn -> 'a tree
 val insert : 'a tree -> 'a -> unit
 
 (* Apply the given reduction to the tree in parallel, and update
-   the nodes with the results. *)
+   the nodes with the results. The int parameter controls the
+   parallel recursion depth: depth 0 means no parallelism;
+   depth 1 means proceed in parallel from the root only; etc. *)
 val reduce : 'a tree * int -> 'a reduction -> 'a option
 
 (* Obtain a read-only tree. *)
