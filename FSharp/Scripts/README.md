@@ -38,6 +38,6 @@ don't write spaces when invoking either C' or T; instead you write
 
 `::`
 
-
+**Requirements:** Python 2.5--2.7.
 
 
