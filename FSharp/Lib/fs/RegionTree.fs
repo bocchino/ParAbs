@@ -29,8 +29,8 @@ let insert {arity=arity;root=root;indexFn=indexFn} newData =
               let children = SML.Array.array (arity, None)
               let inner = {data=ref None;children=children}
               let idx = indexFn (!oldData,level)
-              (SML.Array.update (children,idx,root);
-               insert'' inner newData level)
+              SML.Array.update (children,idx,root)
+              insert'' inner newData level
             | Some (Inner inner) -> insert'' inner newData level)
     and insert'' {data=data;children=children} newData level =
         let idx = indexFn (newData,level)
@@ -40,22 +40,34 @@ let insert {arity=arity;root=root;indexFn=indexFn} newData =
          Inner {data=data;children=children})
     root := insert' (!root) newData 0
 
-let reduce {arity=arity;root=root;indexFn=indexFn} reduction =
-    let rec reduce' root =
+let reduce ({arity=arity;root=root;indexFn=indexFn},maxDepth:int) reduction =
+    let rec reduce' depth root =
         match root with
             Some (Leaf data) -> 
             let result = match reduction (Some (!data)) [] with
                              Some data' -> data'
                            | None       -> !data
-            (data := result; Some result)
+            data := result
+            Some result
           | Some (Inner {data=data;children=children}) -> 
-            let childList = SML.Array.foldl SML.List.cons [] children
-            (* TODO: Should be parallel *)
-            let dataList = List.map reduce' childList
+#if PARALLEL
+            let dataList =
+                if depth < maxDepth then
+                    let dataArray =
+                        Array.Parallel.map (reduce' (depth + 1)) children
+                    SML.Array.foldr SML.List.cons [] dataArray
+                else
+                    let childList = SML.Array.foldr SML.List.cons [] children
+                    List.map (reduce' maxDepth) childList
+#else
+            let childList = SML.Array.foldr SML.List.cons [] children
+            let dataList = List.map (reduce' 0) childList
+#endif
             let result = reduction (!data) dataList
-            (data := result; result)
+            data := result
+            result
           | None -> None
-    reduce' (!root)
+    reduce' 0 (!root)
     
 let readOnly<'a> (tree:'a tree):'a readOnlyTree = tree
 

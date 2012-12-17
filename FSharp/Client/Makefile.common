@@ -11,23 +11,23 @@ TARGET_PAR=$(TARGET)-par.exe
 .PHONY : all
 all : $(TARGET_SEQ) $(TARGET_PAR)
 
-$(TARGET_SEQ) : $(FSI) $(FS)
+$(TARGET_SEQ) : $(FSI_LIB) $(FSI) $(FS_LIB) $(FS)
 ifndef PAR_ABS
 	$(error Set variable PAR_ABS to your ParAbs installation first)
 endif
 ifndef FSHARPC
 	$(error Set variable FSHARPC to your F# compiler first)
 endif
-	$(FSHARPC) $(FSI_LIB) $(FS_LIB) $(FS) -o $@
+	$(FSHARPC) $+ -o $@
 
-$(TARGET_PAR) : $(FSI) $(FS)
+$(TARGET_PAR) : $(FSI_LIB) $(FSI) $(FS_LIB) $(FS)
 ifndef PAR_ABS
 	$(error Set variable PAR_ABS to your ParAbs installation first)
 endif
 ifndef FSHARPC
 	$(error Set variable FSHARPC to your F# compiler first)
 endif
-	$(FSHARPC) -d:PARALLEL $(FSI_LIB) $(FS_LIB) $(FS) -o $@
+	$(FSHARPC) -d:PARALLEL $+ -o $@
 
 .PHONY : clean
 clean :

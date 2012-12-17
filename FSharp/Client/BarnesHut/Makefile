@@ -9,6 +9,7 @@ FS=fs/Constants.fs \
    fs/BarnesHut.fs
 TARGET=BarnesHut
 SIZE ?= 64
+DEPTH ?= 1
 SML_BH=$(PAR_ABS)/StandardML/Client/BarnesHut
 CLEAN=rm -f output
 
@@ -26,21 +27,21 @@ output-seq ::
 test-seq :
 	make output-seq SIZE=$(SIZE)
 	make -C $(SML_BH) output SIZE=$(SIZE)
-	diff -u ./output $(SML_BH)/output
+	diff -q ./output $(SML_BH)/output
 
 .PHONY : run-par
 run-par : $(TARGET_PAR)
-	$(MONO) $< --size=$(SIZE) $(OPTS)
+	$(MONO) $< --size=$(SIZE) --depth=$(DEPTH) $(OPTS)
 
 .PHONY : output-par
 output-par ::
-	$(MONO) $(TARGET_PAR) --size=$(SIZE) --output > output
+	$(MONO) $(TARGET_PAR) --size=$(SIZE) --depth=$(DEPTH) --output > output
 
 .PHONY : test-par
 test-par :
-	make output-par SIZE=$(SIZE)
-	make -C $(SML_BH) output SIZE=$(SIZE)
-	diff -u ./output $(SML_BH)/output
+	make output-par SIZE=$(SIZE) DEPTH=$(DEPTH)
+	make -C $(SML_BH) output SIZE=$(SIZE) DEPTH=$(DEPTH)
+	diff -q ./output $(SML_BH)/output
 
 .PHONY : test
 test : test-seq test-par

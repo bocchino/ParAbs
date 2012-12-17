@@ -11,6 +11,7 @@ open DataGen
 
 
 let nbody = ref 64
+let depth = ref 1
 let tree = Tree.create
 
 (* Initialize the system *)
@@ -51,7 +52,7 @@ let stepSystem nstep =
    SML.Array.app (Util.optApp (RegionTree.insert regionTree)) bodies
    Tree.reorderBodies (tree,readOnlyRegionTree)
    (* Fill in center-with-mass coordinates *)
-   ignore (RegionTree.reduce regionTree Tree.centerOfMass)
+   ignore (RegionTree.reduce (regionTree,!depth) Tree.centerOfMass)
    (* Compute gravity on particles *)
    Gravity.computeForces (tree,readOnlyRegionTree,nstep)
    (* Update particle positions *)
@@ -76,13 +77,15 @@ let (|Prefix|_|) (p:string) (s:string) =
 
 let usage () =
     printfn "usage: barnes-hut [opts]"
-    printfn "  --size=size  set data size"
-    printfn "  --output     generate test output"
+    printfn "  --depth=d  set parallel recursion depth to d"
+    printfn "  --size=s   set data size to s"
+    printfn "  --output   generate test output"
 
 let parseArg i arg =
     try
         match (i,arg) with
           | (0,_)                -> ()
+          | (_,Prefix "--depth=" d)   -> depth := System.Int32.Parse d
           | (_,Prefix "--output" "") -> Util.outputMode := true
           | (_,Prefix "--size=" sz)  -> nbody := System.Int32.Parse sz
           | _                        -> raise BadOpts

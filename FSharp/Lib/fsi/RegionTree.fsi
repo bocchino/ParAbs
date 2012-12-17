@@ -43,7 +43,7 @@ val insert : 'a tree -> 'a -> unit
 
 (* Apply the given reduction to the tree in parallel, and update
    the nodes with the results. *)
-val reduce : 'a tree -> 'a reduction -> 'a option
+val reduce : 'a tree * int -> 'a reduction -> 'a option
 
 (* Obtain a read-only tree. *)
 val readOnly : 'a tree -> 'a readOnlyTree
