@@ -5,10 +5,6 @@ FSI_LIB=$(SML)/fsi/*.fsi \
     	$(LIB)/fsi/*.fsi
 FS_LIB=$(SML)/fs/*.fs \
        $(LIB)/fs/*.fs
-FS_LIB_SEQ=$(SML)/fs/*.fs      \
-	   $(LIB)/fs/seq/*.fs
-FS_LIB_PAR=$(SML)/fs/*.fs      \
-	   $(LIB)/fs/par/*.fs
 TARGET_SEQ=$(TARGET)-seq.exe
 TARGET_PAR=$(TARGET)-par.exe
 
@@ -22,8 +18,7 @@ endif
 ifndef FSHARPC
 	$(error Set variable FSHARPC to your F# compiler first)
 endif
-	make -C $(LIB)/fs
-	$(FSHARPC) $(FS_LIB_SEQ) $(FS) -o $@
+	$(FSHARPC) $(FSI_LIB) $(FS_LIB) $(FS) -o $@
 
 $(TARGET_PAR) : $(FSI) $(FS)
 ifndef PAR_ABS
@@ -32,8 +27,7 @@ endif
 ifndef FSHARPC
 	$(error Set variable FSHARPC to your F# compiler first)
 endif
-	make -C $(LIB)/fs
-	$(FSHARPC) $(FS_LIB_PAR) $(FS) -o $@
+	$(FSHARPC) -d:PARALLEL $(FSI_LIB) $(FS_LIB) $(FS) -o $@
 
 .PHONY : clean
 clean :

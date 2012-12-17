@@ -10,7 +10,11 @@ type modifyiFn<'a, (*readonly*) 'b> = 'b -> (int * 'a) -> 'a
 let modifier spec bInit =
     (SML.Array.array spec, bInit)
 
-let iteri = Array$PARALLEL$iteri
+#if PARALLEL
+let iteri = Array.Parallel.iteri
+#else
+let iteri = Array.iteri
+#endif
 
 let modify (array, readOnlyState) modifyFn =
     let modifyFn' = modifyFn readOnlyState
