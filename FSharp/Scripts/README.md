@@ -10,7 +10,7 @@ This program is a general-purpose tool for translating command-line
 arguments, e.g. from Unix to Windows form and vice versa.  
 
 **Example:** If your makefile says $(FSHARPC) A1 ... An, where setting
-FSHARPC=fsharpc works on Unix, then on windows (inside Cygwin) you
+FSHARPC=fsharpc works on Unix, then on Windows (inside Cygwin) you
 could set FSHARPC to
 
 `python /path/to/translateargs.py fsc cygpath::-w`
