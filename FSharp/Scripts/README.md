@@ -24,9 +24,9 @@ don't write spaces when invoking either Cw or T; instead you write
 
 `::`
 
-As an example, if your makefile says $(FSHARPC) A1 ... An, where
-setting FSHARPC=fsharpc works on Unix, then on windows (inside Cygwin)
-you could set FSHARPC to
+*Example:* If your makefile says $(FSHARPC) A1 ... An, where setting
+FSHARPC=fsharpc works on Unix, then on windows (inside Cygwin) you
+could set FSHARPC to
 
 `python /path/to/translateargs.py fsc cygpath::-w`
 
