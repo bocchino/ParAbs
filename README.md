@@ -7,8 +7,9 @@ that support safe parallel programming with imperative updates.
 License
 -------
 
-This software is free for general use, provided that attribution is
-maintained (citing this repository is sufficient).
+This software and the accompanying documentation are free for general
+use, provided that attribution is maintained (citing this repository
+is sufficient).
 
 This software is provided with absolutely no warranty of any kind.  It
 is a research prototype and is undergoing active development.
@@ -38,11 +39,9 @@ installing Mono:
 
 http://www.mono-project.com/Main_Page
 
-Also, the F# version of the library uses Python to generate some
-source files, so you will need a working Python 2.5--2.7 interpreter.
-
-Finally, the build environment assumes Unix build tools, so on Windows
-you will need to install Cygwin, make, etc.
+Finally, the build environment currently assumes Unix build tools, so
+on Windows you will need to install Cygwin, make, etc. A Visual Studio
+project for the F# library is under development.
 
 Setup
 -----
