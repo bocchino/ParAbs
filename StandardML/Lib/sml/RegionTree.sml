@@ -62,8 +62,7 @@ fun reduce {arity,root,indexFn} reduction =
 		end
 	      | SOME (Inner {data,children}) => 
 		let
-		    val childList = Array.foldl (op::) [] children
-		    (* TODO: Should be parallel *)
+		    val childList = Array.foldr (op::) [] children
 		    val dataList = List.map reduce' childList
 		    val result = reduction (!data) dataList
 		in
