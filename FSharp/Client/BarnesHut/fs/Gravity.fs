@@ -3,24 +3,24 @@ module Gravity
 open Body
 open Constants
 
-type gravityData = {skipID:int;
-                    pos0:Point.t;
-                    phi0:float ref;
-                    acc0:Point.t ref;
-                    ai:Point.t ref;
-                    dr:Point.t ref}
+type gravityData =
+  struct
+    val skipID:int;
+    val pos0:Point.t;
+    val phi0:float ref
+    val acc0:Point.t ref
+    val ai:Point.t ref
+    val dr:Point.t ref
+    new (a:int, b:Point.t, c:float ref , d:Point.t ref , e:Point.t ref, f:Point.t ref) =
+      { skipID = a; pos0 = b; phi0 = c; acc0 = d; ai = e; dr = f; }
+  end
 
-let getSkipID {skipID=skipID;pos0=pos0;phi0=phi0;acc0=acc0;ai=ai;dr=dr} = skipID
-let getPos0   {skipID=skipID;pos0=pos0;phi0=phi0;acc0=acc0;ai=ai;dr=dr} = pos0
-let getPhi0   {skipID=skipID;pos0=pos0;phi0=phi0;acc0=acc0;ai=ai;dr=dr} = !phi0
-let getAcc0   {skipID=skipID;pos0=pos0;phi0=phi0;acc0=acc0;ai=ai;dr=dr} = !acc0
-let getAI     {skipID=skipID;pos0=pos0;phi0=phi0;acc0=acc0;ai=ai;dr=dr} = !ai
-let getDR     {skipID=skipID;pos0=pos0;phi0=phi0;acc0=acc0;ai=ai;dr=dr} = !dr
-
-let setPhi0 {skipID=skipID;pos0=pos0;phi0=phi0;acc0=acc0;ai=ai;dr=dr} phi0' = phi0 := phi0'
-let setAcc0 {skipID=skipID;pos0=pos0;phi0=phi0;acc0=acc0;ai=ai;dr=dr} acc0' = acc0 := acc0'
-let setAI   {skipID=skipID;pos0=pos0;phi0=phi0;acc0=acc0;ai=ai;dr=dr} ai'   = ai := ai'
-let setDR   {skipID=skipID;pos0=pos0;phi0=phi0;acc0=acc0;ai=ai;dr=dr} dr'   = dr := dr'
+let getSkipID (a : gravityData) = a.skipID;
+let getPos0   (a : gravityData) = a.pos0
+let getPhi0   (a : gravityData) = ! a.phi0
+let getAcc0   (a : gravityData) = ! a.acc0
+let getAI     (a : gravityData) = ! a.ai
+let getDR     (a : gravityData) = ! a.dr
 
 (* Should we subdivide a node? *)
 let subdivide (node:body RegionTree.readOnlyNode)
@@ -35,7 +35,7 @@ let subdivide (node:body RegionTree.readOnlyNode)
               let pos0 = getPos0 gd
               let dr = Point.sub (pos,pos0)
               let drsq = Point.dot (dr,dr)
-              setDR gd dr
+              gd.dr := dr
               tolsq * drsq < dsq
 
 (* Compute single body-body interaction *)
@@ -52,11 +52,11 @@ let twoBodies (body:body,gd:gravityData) =
         let phii = (Body.getMass body) / drabs
         let mor3 = phii / drsq
         let ai = Point.muls (dr,mor3)
-        setPhi0 gd (phi0 - phii)
-        setAI gd ai
-        setAcc0 gd (Point.add (acc0,ai))
-        setDR gd dr
-                   
+        gd.phi0 := (phi0 - phii)
+        gd.ai := ai
+        gd.acc0 := (Point.add (acc0,ai))
+        gd.dr := dr
+
 (* Recursively compute gravity induced by tree *)
 let bodyTree (tree:body RegionTree.readOnlyTree,
               rsize:float,gd:gravityData) =
@@ -87,12 +87,12 @@ let allBodies (tree:body RegionTree.readOnlyTree,
           | Some body ->
               let dthf = 0.5 * dtime
               let acc1 = Body.getAcc body
-              let gd = {skipID = Body.getID body;
-                        pos0 = Body.getPos body;
-                        phi0 = ref 0.0;
-                        acc0 = ref Point.zero;
-                        ai = ref Point.zero;
-                        dr = ref Point.zero}
+              let gd = new gravityData ( Body.getID body,
+                         Body.getPos body,
+                          ref 0.0,
+                          ref Point.zero,
+                          ref Point.zero,
+                          ref Point.zero)
               bodyTree (tree,rsize,gd)
               let acc0 = getAcc0 gd
               let newBody =
