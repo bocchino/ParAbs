@@ -6,14 +6,14 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
-		Release|x86 = Release|x86
+		release-parallel|x86 = release-parallel|x86
 		release-sequential|x86 = release-sequential|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{AFD23A4B-C6D9-45E6-87EB-9E26E7A9FE22}.Debug|x86.ActiveCfg = Debug|x86
 		{AFD23A4B-C6D9-45E6-87EB-9E26E7A9FE22}.Debug|x86.Build.0 = Debug|x86
-		{AFD23A4B-C6D9-45E6-87EB-9E26E7A9FE22}.Release|x86.ActiveCfg = Release|x86
-		{AFD23A4B-C6D9-45E6-87EB-9E26E7A9FE22}.Release|x86.Build.0 = Release|x86
+		{AFD23A4B-C6D9-45E6-87EB-9E26E7A9FE22}.release-parallel|x86.ActiveCfg = release-parallel|x86
+		{AFD23A4B-C6D9-45E6-87EB-9E26E7A9FE22}.release-parallel|x86.Build.0 = release-parallel|x86
 		{AFD23A4B-C6D9-45E6-87EB-9E26E7A9FE22}.release-sequential|x86.ActiveCfg = release-sequential|x86
 		{AFD23A4B-C6D9-45E6-87EB-9E26E7A9FE22}.release-sequential|x86.Build.0 = release-sequential|x86
 	EndGlobalSection
