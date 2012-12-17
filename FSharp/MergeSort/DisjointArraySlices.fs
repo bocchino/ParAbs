@@ -43,7 +43,7 @@ module DisjointArraySlices =
       List.rev s
   let apply (a : (slices -> Unit)) (p : partitions) : Unit =
       let ass = Array.ofList p
-#if parallel
+#if PARALLEL
       Array.Parallel.iter a ass
 #else
       Array.iter a ass

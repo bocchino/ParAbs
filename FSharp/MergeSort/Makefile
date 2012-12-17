@@ -21,5 +21,5 @@ $(TARGET_PAR) : $(FS)
 ifndef FSHARPC
 	$(error Set variable FSHARPC to your F# compiler first)
 endif
-	$(FSHARPC) -d parallel $(FS) -o $@
+	$(FSHARPC) -d PARALLEL $(FS) -o $@
 
